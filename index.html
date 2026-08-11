@@ -83,7 +83,7 @@ a:hover{border-bottom-color:var(--gold)}
 }
 .gate button:hover{background:#E8BC63}
 .gate-err{
-  color:var(--saffron);margin:12px 0 0;min-height:19px;
+  color:var(--saffron);font-size:13px;margin:12px 0 0;min-height:19px;
   font-family:'JetBrains Mono',monospace;font-size:12px;
 }
 .gate-note{
@@ -242,7 +242,7 @@ td small{color:var(--dim);font-size:12.5px;display:block;margin-top:3px}
 
 footer{border-top:1px solid var(--rule);padding:28px 0;margin-top:20px;color:var(--faint);font-size:12.5px}
 .hide{display:none !important}
-code{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold)}
+.empty{color:var(--faint);font-family:'JetBrains Mono',monospace;font-size:12px;padding:20px 0}
 
 @media (max-width:600px){
   .shell{padding:0 16px 70px}
@@ -304,6 +304,11 @@ code{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold)}
     </div>
   </div>
 
+  <div class="callout" style="border-left-color:var(--green)">
+    <b>New — Fee Calculator</b>
+    <p>Select sector, institution type, then a specific college where real sourced data exists — get tuition, hostel and mess broken out, with the source linked. Covers engineering, medical, management, law and hotel management, with pharmacy and design listed honestly as not-yet-sourced.</p>
+    <p><a href="./fees.html">Open the fee calculator →</a></p>
+  </div>
   <div class="callout gold">
     <b>One limitation to know before you send this link to Vineet or Shaqlain</b>
     <p>Links that point to a Claude conversation only open for the account that created them. On anyone else's device they will land on a sign-in wall. Anything marked <span class="chip grey" style="display:inline-block">chat only</span> below is in that category — Shive has to export or re-share the file itself for the other two to see it.</p>
@@ -416,7 +421,7 @@ code{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold)}
 
 <section class="ax" id="c">
   <div class="ax-head"><span class="ax-tag">Annexure C</span><h2>GitHub repositories</h2></div>
-  <p class="ax-note">Read live from the <code>Shivee999</code> account: 65 repositories total, of which 15 are original work and the rest are forks. Only the originals are listed. Published addresses that were confirmed in earlier sessions are marked; the others are repositories whose Pages status has not been re-checked, so open the repo first rather than assuming a live URL.</p>
+  <p class="ax-note">Read live from the <code style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold)">Shivee999</code> account: 65 repositories total, of which 15 are original work and the rest are forks. Only the originals are listed. Published addresses that were confirmed in earlier sessions are marked; the others are repositories whose Pages status has not been re-checked, so open the repo first rather than assuming a live URL.</p>
   <div class="grid" data-filter>
     <div class="card ok"><h3>collegemantra</h3><p>This file. The page you are reading.</p><div class="chips"><span class="chip live">published</span><span class="chip">this file</span></div><div class="links"><a href="https://github.com/Shivee999/collegemantra" target="_blank" rel="noopener">Repo</a></div></div>
     <div class="card ok"><h3>ledger</h3><p>Index of every artefact built, in two stacks, plus the public products page and the free-tools hub.</p><div class="chips"><span class="chip live">published</span></div><div class="links"><a href="https://shivee999.github.io/ledger/" target="_blank" rel="noopener">Live</a><a href="https://github.com/Shivee999/ledger" target="_blank" rel="noopener">Repo</a></div></div>
@@ -436,7 +441,7 @@ code{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold)}
   </div>
   <div class="callout" style="margin-top:18px">
     <b>Not on GitHub at all</b>
-    <p>The College Mantra dashboard, cost dashboard, pitch deck, cost PDF, guide book, course film page, DPDP register, Fair Copy tutor and the Germany documents dashboard exist only as files inside conversations. There is no <code>germany</code> repository on the account — that dashboard was written but never pushed. If any of these matter, they need pushing to a repo before they can be shared or survive.</p>
+    <p>The College Mantra dashboard, cost dashboard, pitch deck, cost PDF, guide book, course film page, DPDP register, Fair Copy tutor and the Germany documents dashboard exist only as files inside conversations. There is no <code style="font-family:'JetBrains Mono',monospace;font-size:12px">germany</code> repository on the account — that dashboard was written but never pushed. If any of these matter, they need pushing to a repo before they can be shared or survive.</p>
   </div>
 </section>
 
@@ -596,7 +601,7 @@ code{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold)}
       <h4>Confirmed by direct check</h4>
       <ul>
         <li>The repository list — read live from the GitHub account during this build. 65 repositories, 15 original.</li>
-        <li>That no <code>germany</code> repository exists on the account.</li>
+        <li>That no <code style="font-family:'JetBrains Mono',monospace;font-size:12px">germany</code> repository exists on the account.</li>
         <li>That this page is published, since it was pushed and enabled here.</li>
       </ul>
     </div>
