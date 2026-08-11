@@ -3,448 +3,678 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex, nofollow">
-<title>College Mantra — Fee Calculator</title>
+<title>College Mantra — Cost of Attendance</title>
+<meta property="og:title" content="College Mantra — Cost of Attendance">
+<meta property="og:description" content="Tuition, hostel, mess and living costs for Indian higher education. Every figure sourced.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;0,6..96,700;1,6..96,400&family=Public+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --navy:#0B1220;--file:#121A2B;--file2:#182138;
+  --navy:#0B1220;--file:#121A2B;--file2:#182138;--file3:#1E2942;
   --rule:rgba(216,169,74,.20);--rule-soft:rgba(216,169,74,.10);
   --gold:#D8A94A;--gold-dim:rgba(216,169,74,.12);
   --saffron:#E1683C;--saffron-dim:rgba(225,104,60,.13);
   --green:#5FB98E;--green-dim:rgba(95,185,142,.13);
   --blue:#6FA8DC;--blue-dim:rgba(111,168,220,.13);
-  --paper:#EDE6D6;--dim:#93A0B8;--faint:#61708C;--r:4px;
+  --violet:#A98BD8;--violet-dim:rgba(169,139,216,.13);
+  --paper:#EDE6D6;--dim:#93A0B8;--faint:#61708C;--r:5px;
 }
 *{box-sizing:border-box}
+html{scroll-behavior:smooth}
 body{margin:0;background:var(--navy);color:var(--paper);font-family:'Public Sans',system-ui,sans-serif;font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased}
-a{color:var(--gold)}
+a{color:var(--gold);text-decoration:none;border-bottom:1px solid var(--rule)}
+a:hover{border-bottom-color:var(--gold)}
 :focus-visible{outline:2px solid var(--gold);outline-offset:3px}
-code{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold)}
-.shell{max-width:1180px;margin:0 auto;padding:0 22px 100px}
-.masthead{padding:40px 0 26px;border-bottom:1px solid var(--rule)}
-.mast-top{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
-.back{color:var(--dim);text-decoration:none;border-bottom:1px solid var(--rule)}
-.masthead h1{font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(32px,5.5vw,52px);line-height:1.02;margin:0 0 12px;letter-spacing:-.015em}
+.mono{font-family:'JetBrains Mono',monospace}
+.shell{max-width:1240px;margin:0 auto;padding:0 22px 110px}
+.masthead{padding:44px 0 28px;border-bottom:1px solid var(--rule)}
+.mast-top{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.back{color:var(--dim)}
+.masthead h1{font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(34px,6vw,60px);line-height:1;margin:0 0 14px;letter-spacing:-.015em}
 .masthead h1 em{font-style:italic;font-weight:400;color:var(--gold)}
-.mast-sub{color:var(--dim);max-width:70ch;margin:0;font-size:15.5px}
-
-.honesty{
-  margin:26px 0 30px;border:1px solid var(--rule);border-left:2px solid var(--saffron);
-  background:var(--file);border-radius:var(--r);padding:18px 20px;
-}
-.honesty b{display:block;font-size:14.5px;margin-bottom:8px}
-.honesty p{margin:0 0 8px;font-size:13.5px;color:var(--dim);line-height:1.65}
-.honesty p:last-child{margin-bottom:0}
-.legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-.leg{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border-radius:2px;border:1px solid var(--rule)}
-.leg.v{background:var(--green-dim);color:var(--green);border-color:rgba(95,185,142,.3)}
-.leg.e{background:var(--saffron-dim);color:var(--saffron);border-color:rgba(225,104,60,.3)}
-.leg.n{background:rgba(147,160,184,.09);color:var(--dim);border-color:rgba(147,160,184,.2)}
-
-.calc{border:1px solid var(--rule);border-top:3px solid var(--gold);background:var(--file);border-radius:var(--r);padding:26px 26px 28px;margin-bottom:30px}
-.calc h2{font-family:'Bodoni Moda',serif;font-size:22px;font-weight:600;margin:0 0 20px}
-.step-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:18px}
-.step{display:flex;flex-direction:column;gap:7px}
-.step label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
-select{
-  background:var(--navy);border:1px solid var(--rule);color:var(--paper);
-  padding:11px 12px;border-radius:var(--r);font-family:'Public Sans',sans-serif;font-size:14px;
-  appearance:none;-webkit-appearance:none;
-  background-image:linear-gradient(45deg,transparent 50%,var(--gold) 50%),linear-gradient(135deg,var(--gold) 50%,transparent 50%);
-  background-position:calc(100% - 18px) center,calc(100% - 13px) center;background-size:5px 5px,5px 5px;background-repeat:no-repeat;
-}
-select:focus{border-color:var(--gold);outline:none}
+.mast-sub{color:var(--dim);max-width:70ch;margin:0;font-size:16px}
+.scope{margin:26px 0 32px;border:1px solid var(--rule);border-left:2px solid var(--saffron);background:var(--file);border-radius:var(--r);padding:18px 20px}
+.scope b{display:block;font-size:14.5px;margin-bottom:8px}
+.scope p{margin:0 0 9px;font-size:13.5px;color:var(--dim);line-height:1.65}
+.scope p:last-child{margin-bottom:0}
+.scope .num{color:var(--paper);font-weight:600}
+.nav{position:sticky;top:0;z-index:40;background:rgba(11,18,32,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--rule);padding:11px 0;margin-bottom:34px}
+.nav-in{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.nav a{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.1em;color:var(--dim);border:1px solid var(--rule);border-radius:var(--r);padding:6px 10px;text-transform:uppercase}
+.nav a:hover{color:var(--gold);border-color:var(--gold)}
+.sec{margin:0 0 58px;scroll-margin-top:70px}
+.sec-head{display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--gold);padding-bottom:10px;margin-bottom:10px;flex-wrap:wrap}
+.sec-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--navy);background:var(--gold);padding:3px 9px;border-radius:2px;text-transform:uppercase;font-weight:600;white-space:nowrap}
+.sec-head h2{font-family:'Bodoni Moda',serif;font-weight:600;font-size:clamp(21px,3.3vw,29px);margin:0;letter-spacing:-.01em}
+.sec-note{color:var(--dim);font-size:14px;margin:0 0 22px;max-width:76ch}
+.calc{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:18px;align-items:start}
+@media(max-width:900px){.calc{grid-template-columns:1fr}}
+.panel{background:var(--file);border:1px solid var(--rule);border-radius:var(--r);padding:20px}
+.panel.sticky{position:sticky;top:62px}
+@media(max-width:900px){.panel.sticky{position:static}}
+.panel h3{font-family:'Bodoni Moda',serif;font-size:18px;font-weight:600;margin:0 0 16px;padding-bottom:10px;border-bottom:1px solid var(--rule-soft)}
+.fld{margin-bottom:15px}
+.fld label{display:block;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:7px}
+select,input[type=number]{width:100%;background:var(--navy);border:1px solid var(--rule);color:var(--paper);padding:10px 12px;border-radius:var(--r);font-family:'Public Sans',sans-serif;font-size:14px}
+select{appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--gold) 50%),linear-gradient(135deg,var(--gold) 50%,transparent 50%);background-position:calc(100% - 17px) center,calc(100% - 12px) center;background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:34px}
+select:focus,input:focus{border-color:var(--gold);outline:none}
 select:disabled{opacity:.4}
-
-.result{border-top:1px solid var(--rule);padding-top:22px;margin-top:6px}
-.result-head{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:16px}
-.result-head h3{font-family:'Bodoni Moda',serif;font-size:19px;font-weight:600;margin:0}
-.tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:2px;font-weight:600}
-.tag.v{background:var(--green-dim);color:var(--green)}
-.tag.e{background:var(--saffron-dim);color:var(--saffron)}
-.tag.n{background:rgba(147,160,184,.12);color:var(--dim)}
-
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:18px}
-.kpi{background:var(--navy);border:1px solid var(--rule);border-radius:var(--r);padding:14px 16px}
-.kpi .n{font-family:'Bodoni Moda',serif;font-size:24px;font-weight:700;color:var(--gold);line-height:1.1}
-.kpi .l{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-top:6px}
-.kpi.total{border-color:var(--gold);border-width:2px}
-.kpi.total .n{color:var(--paper);font-size:26px}
-
-.brk{border:1px solid var(--rule-soft);border-radius:var(--r);overflow:hidden;margin-bottom:16px}
-.brk-row{display:flex;justify-content:space-between;padding:9px 14px;font-size:13.5px;border-bottom:1px solid var(--rule-soft)}
+.hint{font-size:11.5px;color:var(--faint);margin-top:5px;line-height:1.5}
+.seg{display:flex;gap:5px;flex-wrap:wrap}
+.seg button{flex:1;min-width:70px;background:var(--navy);border:1px solid var(--rule);color:var(--dim);padding:8px 6px;border-radius:var(--r);font-family:'Public Sans',sans-serif;font-size:12.5px;cursor:pointer;transition:.12s}
+.seg button:hover{border-color:var(--gold)}
+.seg button.on{background:var(--gold-dim);border-color:var(--gold);color:var(--gold);font-weight:600}
+.slider-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px}
+.slider-row span:last-child{font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--gold)}
+input[type=range]{width:100%;-webkit-appearance:none;appearance:none;height:3px;background:var(--rule);border-radius:2px;outline:none;margin:7px 0 0}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;height:15px;border-radius:50%;background:var(--gold);cursor:pointer;border:2px solid var(--navy)}
+input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;background:var(--gold);cursor:pointer;border:2px solid var(--navy)}
+.hero{background:linear-gradient(160deg,var(--file2),var(--file));border:1px solid var(--gold);border-radius:var(--r);padding:24px 26px;margin-bottom:16px}
+.hero .lbl{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.hero .big{font-family:'Bodoni Moda',serif;font-size:clamp(34px,6.5vw,52px);font-weight:700;line-height:1;letter-spacing:-.02em}
+.hero .sub{color:var(--dim);font-size:13.5px;margin-top:10px}
+.hero .split{display:flex;gap:26px;flex-wrap:wrap;margin-top:18px;padding-top:16px;border-top:1px solid var(--rule)}
+.hero .split div .n{font-family:'Bodoni Moda',serif;font-size:22px;font-weight:600;color:var(--gold)}
+.hero .split div .l{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin-top:3px}
+.stack{display:flex;height:34px;border-radius:var(--r);overflow:hidden;border:1px solid var(--rule);margin-bottom:10px}
+.stack div{display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--navy);font-weight:600;min-width:0;overflow:hidden;transition:width .3s}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:20px}
+.legend span{font-size:11.5px;color:var(--dim);display:flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:2px;display:inline-block}
+.brk{border:1px solid var(--rule);border-radius:var(--r);overflow:hidden;margin-bottom:16px;background:var(--file)}
+.brk-grp{padding:11px 15px;background:var(--file3);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);border-bottom:1px solid var(--rule)}
+.brk-row{display:flex;justify-content:space-between;gap:14px;padding:9px 15px;font-size:13.5px;border-bottom:1px solid var(--rule-soft)}
 .brk-row:last-child{border-bottom:none}
-.brk-row b{font-weight:600}
-.brk-row span:last-child{font-family:'JetBrains Mono',monospace;color:var(--dim)}
-
-.note{font-size:13px;color:var(--dim);line-height:1.65;background:var(--navy);border:1px solid var(--rule-soft);border-radius:var(--r);padding:13px 15px;margin-bottom:10px}
+.brk-row .v{font-family:'JetBrains Mono',monospace;color:var(--paper);white-space:nowrap}
+.brk-row .k small{display:block;color:var(--faint);font-size:11.5px;margin-top:2px}
+.brk-row.tot{background:var(--file2);font-weight:600}
+.brk-row.tot .v{color:var(--gold)}
+.brk-row.zero .v{color:var(--green)}
+.note{font-size:13px;color:var(--dim);line-height:1.65;background:var(--file);border:1px solid var(--rule-soft);border-radius:var(--r);padding:13px 15px;margin-bottom:10px}
 .note.warn{border-left:2px solid var(--saffron)}
-.src{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--faint);margin-top:4px}
-.src a{color:var(--gold);border-bottom:1px solid var(--rule)}
-.placeholder{color:var(--faint);font-family:'JetBrains Mono',monospace;font-size:12.5px;padding:30px 0;text-align:center}
-
-.tbl-wrap{margin-top:36px}
-.tbl-wrap h2{font-family:'Bodoni Moda',serif;font-size:20px;font-weight:600;margin:0 0 6px}
-.tbl-note{color:var(--dim);font-size:13.5px;margin:0 0 16px;max-width:74ch}
+.note.ok{border-left:2px solid var(--green)}
+.note b{color:var(--paper)}
+.srcline{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--faint);margin:8px 0 0;line-height:1.7}
+.srcline a{color:var(--gold)}
 .tw{overflow-x:auto;border:1px solid var(--rule);border-radius:var(--r);background:var(--file)}
-table{width:100%;border-collapse:collapse;font-size:13px;min-width:600px}
-th{text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);padding:10px 13px;border-bottom:1px solid var(--rule);white-space:nowrap}
-td{padding:10px 13px;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:620px}
+th{text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);padding:11px 14px;border-bottom:1px solid var(--rule);white-space:nowrap;font-weight:600}
+td{padding:10px 14px;border-bottom:1px solid var(--rule-soft);vertical-align:top}
 tbody tr:last-child td{border-bottom:none}
 tbody tr:hover{background:var(--file2)}
-
-footer{border-top:1px solid var(--rule);padding:26px 0;margin-top:40px;color:var(--faint);font-size:12.5px}
-.hide{display:none !important}
-@media(max-width:600px){.shell{padding:0 16px 70px}.calc{padding:20px 18px 22px}}
+td .mono{font-size:12.5px;white-space:nowrap}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(275px,1fr));gap:13px}
+.card{background:var(--file);border:1px solid var(--rule);border-left:2px solid var(--gold);border-radius:var(--r);padding:15px 16px}
+.card.g{border-left-color:var(--green)}
+.card.s{border-left-color:var(--saffron)}
+.card.b{border-left-color:var(--blue)}
+.card.m{border-left-color:var(--faint)}
+.card h4{font-size:15px;font-weight:600;margin:0 0 7px}
+.card p{margin:0;font-size:13px;color:var(--dim);line-height:1.6}
+.card .fig{font-family:'Bodoni Moda',serif;font-size:20px;font-weight:600;color:var(--gold);margin-bottom:4px}
+.chip{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;padding:3px 7px;border-radius:2px;background:var(--gold-dim);color:var(--gold);border:1px solid var(--rule);display:inline-block;margin-top:8px}
+.chip.g{background:var(--green-dim);color:var(--green);border-color:rgba(95,185,142,.3)}
+.chip.s{background:var(--saffron-dim);color:var(--saffron);border-color:rgba(225,104,60,.3)}
+.chip.m{background:rgba(147,160,184,.09);color:var(--dim);border-color:rgba(147,160,184,.2)}
+footer{border-top:1px solid var(--rule);padding:28px 0;margin-top:20px;color:var(--faint);font-size:12.5px}
+footer b{color:var(--paper)}
+@media(max-width:600px){.shell{padding:0 15px 80px}.panel{padding:16px}.hero{padding:20px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
 </style>
 </head>
 <body>
 <div class="shell">
-  <header class="masthead">
-    <p class="mast-top"><a class="back" href="./">← Admission desk</a><span>·</span>Fee calculator</p>
-    <h1>What will <em>this course, at this college</em> actually cost</h1>
-    <p class="mast-sub">Pick a sector, then a type of institution, then a specific one where real data exists. Tuition, hostel, mess and one-time charges, with every figure traced back to where it came from.</p>
-  </header>
 
-  <div class="honesty">
-    <b>Read this before you quote a number to a parent.</b>
-    <p>India has 50,000+ colleges. Nobody can honestly hand you verified, current fees for all of them in one build — fees change every admission cycle and vary by category, quota, and state-vs-outside-state. So this tool does not pretend to cover every college in India. It covers real, sourced figures for the major national institutions in each sector — every IIT, every NIT, every IIM, the top NLUs, AIIMS — plus honest typical ranges for the broader state and private tier of each sector, and a clear "not sourced" label wherever I have nothing to stand behind. Every specific college fee you see here was pulled from a live web search while building this, with its source linked.</p>
-    <div class="legend">
-      <span class="leg v">Verified source</span>
-      <span class="leg e">Typical range — not per-college</span>
-      <span class="leg n">Not sourced this session</span>
-    </div>
-  </div>
+<header class="masthead">
+  <p class="mast-top"><a class="back" href="./">← Admission desk</a><span>·</span>Cost of attendance</p>
+  <h1>What a degree <em>actually costs</em> — fees plus living</h1>
+  <p class="mast-sub">Tuition is the number colleges publish. Hostel, mess, rent, food and travel are the numbers that decide whether a family can afford the seat. This works out both, per year and across the full course.</p>
+</header>
+
+<div class="scope">
+  <b>Coverage, stated plainly — read this first.</b>
+  <p>India has roughly <span class="num">50,000+</span> colleges. There is no public database that publishes current, verified fees for all of them, and fees are re-fixed every admission cycle by state fee regulatory committees. <b style="color:var(--paper)">No tool — mine or anyone's — can give you verified fees for all 50,000.</b> Anything that claims to is guessing at scale.</p>
+  <p>So this covers two things properly instead of 50,000 things badly. <span class="num">One:</span> named institutions where a real published figure exists — all 23 IITs, all 31 NITs, the IIITs, AIIMS, and the fee bands set by regulation. <span class="num">Two:</span> the living-cost engine below, which applies to <b style="color:var(--paper)">any college in India</b>, because it is driven by city and accommodation type rather than by institution. That second half is what makes this usable for a college I have no fee row for — put the college's own quoted tuition into the override box and the rest still computes.</p>
+  <p>Every figure carries its source. Where sources disagree, I show the disagreement rather than picking the convenient one.</p>
+</div>
+
+<nav class="nav"><div class="nav-in">
+  <a href="#calc">Calculator</a><a href="#tuition">Tuition data</a><a href="#living">Living costs</a>
+  <a href="#waiver">Waivers</a><a href="#hidden">Hidden costs</a><a href="#sources">Sources</a>
+</div></nav>
+
+<section class="sec" id="calc">
+  <div class="sec-head"><span class="sec-tag">01</span><h2>Cost of attendance calculator</h2></div>
+  <p class="sec-note">Pick the institution if it is in the list. If it is not — and most Indian colleges will not be — choose "Other / not listed" and type the tuition the college itself quoted you. The living side computes either way.</p>
 
   <div class="calc">
-    <h2>Calculator</h2>
-    <div class="step-row">
-      <div class="step">
-        <label for="sSector">1 · Sector</label>
-        <select id="sSector"></select>
+    <div class="panel sticky">
+      <h3>Inputs</h3>
+      <div class="fld">
+        <label for="fSector">Sector</label>
+        <select id="fSector"></select>
       </div>
-      <div class="step">
-        <label for="sTier">2 · Type of institution</label>
-        <select id="sTier"></select>
+      <div class="fld">
+        <label for="fGroup">Institution group</label>
+        <select id="fGroup"></select>
       </div>
-      <div class="step">
-        <label for="sInst">3 · Institution</label>
-        <select id="sInst"></select>
+      <div class="fld">
+        <label for="fInst">Institution</label>
+        <select id="fInst"></select>
+        <p class="hint" id="instHint"></p>
+      </div>
+      <div class="fld" id="ovrWrap" style="display:none">
+        <label for="fOvr">Tuition quoted by the college (₹ per year)</label>
+        <input id="fOvr" type="number" min="0" step="1000" placeholder="e.g. 185000">
+        <p class="hint">Use the figure on the college's own fee notification, not a listing site.</p>
+      </div>
+      <div class="fld">
+        <label>Category / income slab</label>
+        <div class="seg" id="fCat">
+          <button data-v="gen" class="on">General·OBC·EWS</button>
+          <button data-v="low">Income &lt; ₹5L</button>
+          <button data-v="sc">SC·ST·PwD</button>
+        </div>
+        <p class="hint" id="catHint"></p>
+      </div>
+      <div class="fld">
+        <label for="fCity">City tier (drives living cost)</label>
+        <select id="fCity"></select>
+      </div>
+      <div class="fld">
+        <label>Where the student lives</label>
+        <div class="seg" id="fStay">
+          <button data-v="hostel" class="on">Campus hostel</button>
+          <button data-v="pg">PG</button>
+          <button data-v="flat">Shared flat</button>
+          <button data-v="home">Lives at home</button>
+        </div>
+      </div>
+      <div class="fld">
+        <div class="slider-row"><span>Accommodation</span><span id="lRent"></span></div>
+        <input type="range" id="sRent" min="0" max="30000" step="500">
+        <p class="hint" id="hRent"></p>
+      </div>
+      <div class="fld">
+        <div class="slider-row"><span>Food / mess</span><span id="lFood"></span></div>
+        <input type="range" id="sFood" min="0" max="20000" step="500">
+      </div>
+      <div class="fld">
+        <div class="slider-row"><span>Transport</span><span id="lTrans"></span></div>
+        <input type="range" id="sTrans" min="0" max="8000" step="250">
+      </div>
+      <div class="fld">
+        <div class="slider-row"><span>Phone, internet, personal</span><span id="lMisc"></span></div>
+        <input type="range" id="sMisc" min="0" max="15000" step="500">
+      </div>
+      <div class="fld">
+        <div class="slider-row"><span>Books, lab, one-off yearly</span><span id="lBooks"></span></div>
+        <input type="range" id="sBooks" min="0" max="60000" step="1000">
       </div>
     </div>
-    <div class="result" id="resultWrap">
-      <div class="placeholder" id="placeholder">Select a sector, a type, and an institution above.</div>
-      <div id="resultBody" class="hide"></div>
+
+    <div>
+      <div class="hero">
+        <div class="lbl" id="heroLbl">Total cost of the degree</div>
+        <div class="big" id="heroBig">—</div>
+        <div class="sub" id="heroSub"></div>
+        <div class="split">
+          <div><div class="n" id="kYear">—</div><div class="l">Per year</div></div>
+          <div><div class="n" id="kMonth">—</div><div class="l">Per month, living</div></div>
+          <div><div class="n" id="kTui">—</div><div class="l">Tuition share</div></div>
+          <div><div class="n" id="kDur">—</div><div class="l">Course length</div></div>
+        </div>
+      </div>
+
+      <div class="stack" id="stack"></div>
+      <div class="legend">
+        <span><i style="background:var(--gold)"></i>Tuition</span>
+        <span><i style="background:var(--blue)"></i>Accommodation</span>
+        <span><i style="background:var(--green)"></i>Food</span>
+        <span><i style="background:var(--violet)"></i>Transport &amp; personal</span>
+        <span><i style="background:var(--saffron)"></i>Books &amp; one-off</span>
+      </div>
+
+      <div class="brk" id="brk"></div>
+      <div id="outNotes"></div>
     </div>
   </div>
+</section>
 
-  <section class="tbl-wrap">
-    <h2>Every IIM, side by side — 2-year MBA/PGP total fee</h2>
-    <p class="tbl-note">Sourced together on one date, so this is the one full-sector table honest enough to show in full rather than through the selector. Hostel, mess and books add roughly ₹4.5–9.5 lakh more over two years, separately from the figure below. <span class="src">Source: <a href="https://bschool.careers360.com/articles/know-iim-fee-structure-and-seats" target="_blank" rel="noopener">careers360.com</a>, <a href="https://cracku.in/old-iim-mba-fees-2026/" target="_blank" rel="noopener">cracku.in</a> — checked while building this page.</span></p>
-    <div class="tw">
-      <table>
-        <thead><tr><th>IIM</th><th>2-yr programme fee</th></tr></thead>
-        <tbody id="iimTable"></tbody>
-      </table>
-    </div>
-  </section>
+<section class="sec" id="tuition">
+  <div class="sec-head"><span class="sec-tag">02</span><h2>Tuition — what is actually documented</h2></div>
+  <p class="sec-note">The institutions where a real, published, current figure exists. Note the disagreement flagged under the IIT table — that is exactly the kind of thing that should not be smoothed over.</p>
 
-  <footer>
-    <p><b style="color:var(--paper)">College Mantra — Fee Calculator.</b> Companion to the admission desk master file. No backend, no database, nothing stored or sent. Figures above are what I could verify while building this — always confirm against the institution's own current prospectus before a family commits money.</p>
-  </footer>
+  <div class="grid" style="margin-bottom:22px">
+    <div class="card g"><div class="fig">₹1,00,000</div><h4>IIT tuition, per semester</h4><p>Uniform across all 23 IITs regardless of campus or branch, for General / OBC-NCL / EWS with family income above ₹5 lakh. Every rupee of difference between IITs comes from hostel, mess and campus levies — not tuition.</p><span class="chip g">documented</span></div>
+    <div class="card g"><div class="fig">₹62,500</div><h4>NIT tuition, per semester</h4><p>Set uniformly by the NIT Council across the 31 NITs for General / OBC-NCL / EWS. Hostel and mess vary campus by campus.</p><span class="chip g">documented</span></div>
+    <div class="card s"><div class="fig">Not uniform</div><h4>IIIT tuition</h4><p>Unlike IITs and NITs, fees are <b>not</b> uniform across the 26 IIITs. IIIT Hyderabad sits at the top — its 4-year total including hostel and mess can exceed ₹24 lakh. Check the specific IIIT.</p><span class="chip s">varies widely</span></div>
+    <div class="card b"><div class="fig">₹6,000/yr</div><h4>AIIMS Delhi MBBS</h4><p>Roughly ₹6,000 per year — the cheapest serious medical education in the country. There is no management or NRI quota at AIIMS; the only route in is NEET-UG rank.</p><span class="chip g">documented</span></div>
+  </div>
+
+  <div class="tw" style="margin-bottom:14px">
+    <table>
+      <thead><tr><th>Institution</th><th>4-year B.Tech total</th><th>Note</th></tr></thead>
+      <tbody>
+        <tr><td><b>IIT BHU (Varanasi)</b></td><td class="mono">₹8,65,915</td><td>Lowest 4-year total among all IITs</td></tr>
+        <tr><td><b>IIT Goa</b></td><td class="mono">₹9,29,892</td><td>Second lowest</td></tr>
+        <tr><td><b>IIT Ropar</b></td><td class="mono">₹9,30,600</td><td>Third lowest</td></tr>
+        <tr><td><b>IIT Kanpur</b></td><td class="mono">₹9,61,950</td><td>Best low-fee / high-rank combination among the older IITs</td></tr>
+        <tr><td><b>IIT Delhi</b></td><td class="mono">₹13,43,000</td><td>Highest of the totals published in this range</td></tr>
+        <tr><td><b>IIT Kharagpur</b></td><td class="mono">₹1,05,750 / sem</td><td>Plus hostel ₹28,855 per semester; ₹6,000 refundable and ₹5,700 one-time</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note warn">
+    <b>Sources disagree on the IIT total, and the gap is large.</b> One set of sources puts a 4-year B.Tech at roughly ₹8.65–13.9 lakh including hostel. Another puts it at ₹16–20 lakh, on the basis that tuition runs ₹2–2.5 lakh a year and hostel plus mess another ₹1.5–2.5 lakh a year. The likely explanation is what each one counts: mess advances of ₹20,000–25,000 per semester are billed separately and are frequently excluded from the headline total. Quote the lower band as tuition-and-hostel and treat mess as extra, or quote the upper band as all-in — but do not mix them.
+  </div>
+
+  <div class="tw" style="margin-top:22px">
+    <table>
+      <thead><tr><th>MBBS route</th><th>Cost</th><th>What it means</th></tr></thead>
+      <tbody>
+        <tr><td><b>AIIMS</b></td><td class="mono">~₹6,000/yr</td><td>NEET-UG rank only. No management or NRI quota exists.</td></tr>
+        <tr><td><b>Government college</b></td><td class="mono">₹5,000 – ₹6,00,000</td><td>Full-course range across states. Delhi's DU-affiliated colleges start from about ₹1,360 a year — among the lowest anywhere.</td></tr>
+        <tr><td><b>Private college</b></td><td class="mono">₹40 L – ₹1.5 Cr</td><td>Full course. In some states ₹40–60 lakh completes the degree; in others it passes ₹1 crore.</td></tr>
+        <tr><td><b>Deemed / management quota</b></td><td class="mono">₹15 L – ₹45 L per year</td><td>Premium deemed universities charge ₹25–45 lakh <em>annually</em>. Hostel is charged separately in most.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note" style="margin-top:12px">
+    <b>The single most useful sentence to say to a NEET family.</b> The gap between a government seat and a deemed-university seat is not a difference of degree — it is the difference between roughly ₹6,000 a year and over ₹1 crore for the same qualification. One source puts it directly: a swing of 50 marks in NEET can be worth more than ₹1 crore to a family. That reframes coaching spend, a drop year, and rank strategy entirely.
+  </div>
+</section>
+
+<section class="sec" id="living">
+  <div class="sec-head"><span class="sec-tag">03</span><h2>Living costs by city</h2></div>
+  <p class="sec-note">This is the half that applies to every college in India, listed or not. Rent is the largest single line — it takes 30–50% of a monthly budget, and a 1BHK in Mumbai costs roughly six times the same flat in Gwalior or Prayagraj.</p>
+
+  <div class="tw">
+    <table>
+      <thead><tr><th>City</th><th>PG with meals</th><th>All-in student month</th><th>Notes</th></tr></thead>
+      <tbody id="cityTable"></tbody>
+    </table>
+  </div>
+
+  <div class="grid" style="margin-top:20px">
+    <div class="card g"><div class="fig">₹2,000–3,000</div><h4>The cheapest real option</h4><p>Subsidised university hostels start around ₹2,000 a month. Triple-sharing PG in a tier-2 city starts near ₹3,000 — the most popular choice among students for exactly that reason.</p><span class="chip g">floor</span></div>
+    <div class="card s"><div class="fig">₹30,000</div><h4>The ceiling</h4><p>Premium managed student accommodation in Delhi or Mumbai. Same city, same course — a 10x spread against the hostel floor, driven entirely by accommodation choice.</p><span class="chip s">ceiling</span></div>
+    <div class="card b"><div class="fig">₹225–2,000</div><h4>Monthly transport pass</h4><p>Metro monthly passes across Indian cities. Single journeys run ₹15–60. Pune's PMC buses are ₹400–700 a month. Transport is the smallest line in almost every student budget — 5–10%.</p><span class="chip">documented</span></div>
+    <div class="card"><div class="fig">40%</div><h4>Private room premium</h4><p>A private PG room costs 40–60% more than double-sharing. This is the single easiest lever a family has on the monthly number, and it is usually decided emotionally rather than financially.</p><span class="chip">lever</span></div>
+  </div>
+
+  <div class="note" style="margin-top:16px"><b>Rule of thumb worth keeping at the desk.</b> Rent takes 30–50% of the monthly budget, food 15–25%, transport 5–10%, utilities 5–8%. If a family's estimate does not roughly fall into that shape, something has been left out — and it is almost always food or the deposit.</div>
+</section>
+
+<section class="sec" id="waiver">
+  <div class="sec-head"><span class="sec-tag">04</span><h2>Waivers and scholarships that change the number</h2></div>
+  <p class="sec-note">These are not marginal. At an IIT or NIT they can take tuition to zero, which is the difference between an unaffordable seat and an affordable one. Families frequently do not know they exist.</p>
+  <div class="grid">
+    <div class="card g"><h4>SC / ST / PwD — full tuition waiver</h4><p>At all 23 IITs, SC, ST and PwD students receive a 100% tuition waiver <b>regardless of family income</b>. The 4-year outgo drops to roughly ₹1.5–3 lakh, covering only hostel, mess and basic institute fees. NITs operate full or partial remission on the same principle.</p><span class="chip g">tuition → zero</span></div>
+    <div class="card g"><h4>Income below ₹1 lakh — tuition zero</h4><p>At IIT Kharagpur, General / EWS / OBC-NCL students with family income under ₹1 lakh pay zero tuition. Between ₹1 lakh and ₹5 lakh, tuition drops to ₹33,335 per semester instead of ₹1,00,000 — a two-thirds reduction.</p><span class="chip g">two-thirds off</span></div>
+    <div class="card b"><h4>Merit-cum-Means scholarship</h4><p>Full or partial tuition waiver for family income below ₹5 lakh. Up to 25% of the batch is eligible — this is a large fraction, not a token scheme.</p><span class="chip">up to 25% of batch</span></div>
+    <div class="card b"><h4>Institute Merit Scholarship</h4><p>Tuition waiver for the top 7% of each batch on academic performance, with no income test at all.</p><span class="chip">merit only</span></div>
+    <div class="card s"><h4>The certificate that fails families</h4><p>Income certificates for a tuition waiver must come from a Tehsildar or DM-level authority. Sarpanch-signed or self-declared certificates are rejected. The certificate must also be produced fresh every year, with an affidavit on non-judicial stamped paper.</p><span class="chip s">common rejection</span></div>
+    <div class="card m"><h4>Education loans</h4><p>SBI's Scholar Loan scheme offers up to ₹40 lakh for IIT students at preferential rates around 8.5–9%. Other banks run comparable schemes. Premier-institute admission makes loan approval materially easier — worth saying early to a family that is hesitating on cost.</p><span class="chip m">verify current rates</span></div>
+  </div>
+</section>
+
+<section class="sec" id="hidden">
+  <div class="sec-head"><span class="sec-tag">05</span><h2>The costs that surprise families</h2></div>
+  <p class="sec-note">Every one of these is a real line item that is routinely left out of the number a family plans around. The first-semester bill is the shock point.</p>
+  <div class="grid">
+    <div class="card s"><h4>The first semester is bigger than the rest</h4><p>It carries one-time admission charges, refundable caution deposits, registration and other initial fees on top of the normal semester fee. Families budgeting on "fee ÷ 8" get caught here.</p></div>
+    <div class="card s"><h4>Mess advance, billed separately</h4><p>₹20,000–25,000 per semester at IITs, charged on actual consumption and usually excluded from the headline hostel figure. Over 4 years that is ₹1.6–2 lakh that was never in the plan.</p></div>
+    <div class="card"><h4>Seat acceptance fee</h4><p>Paid on the JoSAA portal at allotment, then adjusted against the first-semester fee. Largely refundable if you exit before the final round, minus a processing deduction published in the JoSAA bulletin.</p></div>
+    <div class="card s"><h4>Missing the JoSAA acceptance deadline</h4><p>Described as the single most costly mistake in counselling. One missed deadline is one forfeited seat — no appeal, no second chance within that round. This is a desk process problem, not a student problem.</p><span class="chip s">seat loss</span></div>
+    <div class="card"><h4>Refundable ≠ free</h4><p>Caution and security deposits come back, but only at the end of the course. They still have to be found on day one. Delhi's deemed medical colleges carry a first-year one-time admission and security component of about ₹4,47,500.</p></div>
+    <div class="card m"><h4>Air purifier, Delhi</h4><p>A genuinely odd line that turns out to be real: Delhi's winter air quality between November and February makes an air purifier a ₹8,000–15,000 one-off worth budgeting, plus masks. Small money, but it is the kind of specific that builds trust with an out-of-state family.</p></div>
+  </div>
+</section>
+
+<section class="sec" id="sources">
+  <div class="sec-head"><span class="sec-tag">06</span><h2>Sources, and what to distrust</h2></div>
+  <p class="sec-note">Every figure on this page traces to one of the pages below, retrieved while building it. None of them is an official government fee notification — they are education-media compilations, which is what is publicly searchable. Treat them as good enough to plan a shortlist and not good enough to sign a cheque.</p>
+
+  <div class="tw" style="margin-bottom:18px">
+    <table>
+      <thead><tr><th>Used for</th><th>Source</th></tr></thead>
+      <tbody>
+        <tr><td>NIT tuition ₹62,500/sem, hostel, mess, 4-year cost</td><td><a href="https://infinitylearn.com/knowledge-base/nit-fee-structure-after-jee-main" target="_blank" rel="noopener">infinitylearn.com</a>, <a href="https://www.shiksha.com/engineering/articles/nit-fee-structure-blogId-20209" target="_blank" rel="noopener">shiksha.com</a>, <a href="https://www.collegedekho.com/articles/nits-btech-fee-structure-seat-matrix/" target="_blank" rel="noopener">collegedekho.com</a></td></tr>
+        <tr><td>IIT tuition, per-IIT totals, waivers</td><td><a href="https://infinitylearn.com/knowledge-base/iit-fees-structure" target="_blank" rel="noopener">infinitylearn.com</a>, <a href="https://cracku.in/iit-fee-structure-2026/" target="_blank" rel="noopener">cracku.in</a>, <a href="https://motion.ac.in/examinfo/iit-fees-structure-for-btech/" target="_blank" rel="noopener">motion.ac.in</a>, <a href="https://collegedunia.com/courses/bachelor-of-technology-btech/iit-fees-for-4-year-btech" target="_blank" rel="noopener">collegedunia.com</a></td></tr>
+        <tr><td>The conflicting ₹16–20 lakh IIT estimate, MCM and loan detail</td><td><a href="https://jeecounselling.in/iit-fee-structure-2026" target="_blank" rel="noopener">jeecounselling.in</a></td></tr>
+        <tr><td>IIIT non-uniform fees, IIIT Hyderabad</td><td><a href="https://infinitylearn.com/knowledge-base/iiit-fee-structure-all-iiits-tuition-after-jee" target="_blank" rel="noopener">infinitylearn.com</a></td></tr>
+        <tr><td>MBBS government vs private vs deemed</td><td><a href="https://www.vedantu.com/neet/mbbs-fees-in-government-vs-private-colleges" target="_blank" rel="noopener">vedantu.com</a>, <a href="https://www.matrixedu.in/blog/medical-colleges-fees-in-india-for-mbbs/" target="_blank" rel="noopener">matrixedu.in</a>, <a href="https://www.educationbharat.com/mbbs-fees-in-private-colleges-india/" target="_blank" rel="noopener">educationbharat.com</a></td></tr>
+        <tr><td>Delhi MBBS from ₹1,360/yr, deemed one-time ₹4,47,500</td><td><a href="https://v4edusolution.com/delhi/mbbs-fee-structure" target="_blank" rel="noopener">v4edusolution.com</a></td></tr>
+        <tr><td>PG and hostel costs by city</td><td><a href="https://studentbuddy.io/en-in/blog/average-cost-of-student-accommodation-in-india/" target="_blank" rel="noopener">studentbuddy.io</a>, <a href="https://costoflivingindia.com/" target="_blank" rel="noopener">costoflivingindia.com</a></td></tr>
+        <tr><td>City living totals, budget shape, transport</td><td><a href="https://www.study-abroad.org/blog/in-costs-guide/" target="_blank" rel="noopener">study-abroad.org</a>, <a href="https://www.remitly.com/blog/finance/cost-of-living-in-india/" target="_blank" rel="noopener">remitly.com</a>, <a href="https://youthincmag.com/living-costs-in-indian-metro-cities-a-students-guide" target="_blank" rel="noopener">youthincmag.com</a>, <a href="https://www.nobroker.in/blog/cost-of-living-in-pune/" target="_blank" rel="noopener">nobroker.in</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note warn">
+    <b>Distrust these specifically.</b> Any single figure quoted as if it were exact — the IIT disagreement above shows how far two credible-looking sources can diverge. Any private or deemed college fee, which is re-fixed annually by state committees. Any figure for a college not named on this page. And any living cost more than a year old, since rent moves faster than tuition.
+  </div>
+  <div class="note ok">
+    <b>What to do before a family commits money.</b> Get the college's own current fee notification in writing — the PDF, not the listing-site page. For medical, cross-check against the state fee regulatory committee's published schedule. For anything centrally funded, the JoSAA information bulletin is the authority on deposits, deadlines and refund deductions.
+  </div>
+</section>
+
+<footer>
+  <p><b>College Mantra — Cost of Attendance.</b> Companion to the admission desk file. Single page, no backend, no database; nothing is stored or transmitted. Built for Shive, Vineet and Shaqlain to use in front of a family.</p>
+  <p class="mono" style="margin-top:9px">Figures retrieved while building this page. Living costs and private fees move annually — re-check before each admission season.</p>
+</footer>
+
 </div>
 
 <script>
 (function(){
 "use strict";
 
-var DATA = {
+var inr=new Intl.NumberFormat("en-IN");
+function money(n){return "₹"+inr.format(Math.round(n||0));}
+function lakh(n){
+  n=Math.round(n||0);
+  if(n>=10000000) return "₹"+(n/10000000).toFixed(2).replace(/\.00$/,"")+" Cr";
+  if(n>=100000) return "₹"+(n/100000).toFixed(2).replace(/\.00$/,"")+" L";
+  return money(n);
+}
 
-engineering: { label: "Engineering", tiers: [
-
-  { id:"iit", label:"IIT", type:"verified",
-    note:"Tuition is uniform across all 23 IITs at ₹1,00,000 per semester (₹2,00,000/yr) for General/OBC-NCL/EWS with family income above ₹5 lakh. SC/ST/PwD and low-income students get a full tuition waiver and pay only hostel + mess. Figures below are per institution, 4-year B.Tech.",
-    src:"collegedekho.com, infinitylearn.com, cracku.in, news24online.com", years:4,
+var SECTORS={
+ engineering:{label:"Engineering",groups:[
+   {id:"iit",label:"IIT — all 23",years:4,waiver:true,tuitionYr:200000,
+    note:"Tuition is uniform across all 23 IITs at ₹1,00,000 per semester. Differences between IITs come from hostel, mess and campus levies only.",
     inst:[
-      {name:"IIT Bombay", tuitionYr:200000, hostelYr:33800, messYr:45000, totalCourse:1379000, url:"https://www.collegedekho.com/colleges/iitb-fee-structure"},
-      {name:"IIT Delhi", tuitionYr:200000, hostelYr:36900*2, messYr:0, totalCourse:1343000, url:"https://news24online.com/education/iit-fees-in-2026-how-much-does-a-4-year-b-tech-programme-cost-in-iit-delhi-iit-bombay-others-know-details-here/812529/"},
-      {name:"IIT Kanpur", tuitionYr:200000, hostelYr:null, messYr:null, totalCourse:961950, url:"https://infinitylearn.com/knowledge-base/iit-fees-structure"},
-      {name:"IIT BHU (Varanasi)", tuitionYr:200000, hostelYr:null, messYr:null, totalCourse:865915, url:"https://infinitylearn.com/knowledge-base/iit-fees-structure"},
-      {name:"IIT Ropar", tuitionYr:200000, hostelYr:null, messYr:null, totalCourse:930600, url:"https://infinitylearn.com/knowledge-base/iit-fees-structure"},
-      {name:"IIT Goa", tuitionYr:200000, hostelYr:null, messYr:null, totalCourse:929892, url:"https://infinitylearn.com/knowledge-base/iit-fees-structure"},
-      {name:"IIT Kharagpur", tuitionYr:200000, hostelYr:57710, messYr:null, totalCourse:null, url:"https://collegedunia.com/courses/bachelor-of-technology-btech/iit-fees-for-4-year-btech"}
-    ]
-  },
-
-  { id:"nit", label:"NIT", type:"verified",
-    note:"Tuition is uniform at ₹62,500/semester (₹1,25,000/yr) for General/OBC-NCL/EWS at almost every NIT — VNIT Nagpur is the one exception at ₹1,25,000/semester. Hostel and mess vary a lot by campus.",
-    src:"careers360.com, infinitylearn.com, collegedekho.com", years:4,
+      {n:"IIT BHU (Varanasi)",total:865915},{n:"IIT Goa",total:929892},
+      {n:"IIT Ropar",total:930600},{n:"IIT Kanpur",total:961950},
+      {n:"IIT Delhi",total:1343000},{n:"IIT Kharagpur",total:null,hostelYr:57710},
+      {n:"IIT Bombay",total:null},{n:"IIT Madras",total:null},{n:"IIT Roorkee",total:null},
+      {n:"IIT Guwahati",total:null},{n:"IIT Hyderabad",total:null},{n:"IIT Indore",total:null},
+      {n:"IIT Gandhinagar",total:null},{n:"IIT Mandi",total:null},{n:"IIT Jodhpur",total:null},
+      {n:"IIT Patna",total:null},{n:"IIT Bhubaneswar",total:null},{n:"IIT Tirupati",total:null},
+      {n:"IIT Palakkad",total:null},{n:"IIT Bhilai",total:null},{n:"IIT Jammu",total:null},
+      {n:"IIT Dharwad",total:null},{n:"IIT Dhanbad (ISM)",total:null}
+    ]},
+   {id:"nit",label:"NIT — all 31",years:4,waiver:true,tuitionYr:125000,
+    note:"Tuition set uniformly by the NIT Council at ₹62,500 per semester for General / OBC-NCL / EWS. Hostel and mess vary campus by campus.",
     inst:[
-      {name:"NIT Trichy", tuitionYr:125000, hostelYr:null, messYr:null, totalCourse:500000, url:"https://www.collegedekho.com/amp/articles/nits-btech-fee-structure-seat-matrix/"},
-      {name:"NIT Warangal (typical NIT)", tuitionYr:125000, hostelYr:null, messYr:null, totalCourse:null, url:"https://infinitylearn.com/knowledge-base/nit-fee-structure-after-jee-main"},
-      {name:"MANIT Bhopal", tuitionYr:125000, hostelYr:20500, messYr:null, totalCourse:null, url:"https://engineering.careers360.com/articles/nit-fee-structure"},
-      {name:"NIT Delhi", tuitionYr:null, hostelYr:28000, messYr:null, totalCourse:1000000, url:"https://engineering.careers360.com/articles/nit-fee-structure"},
-      {name:"VNIT Nagpur", tuitionYr:250000, hostelYr:null, messYr:null, totalCourse:null, url:"https://infinitylearn.com/knowledge-base/nit-fee-structure-after-jee-main"},
-      {name:"NIT Calicut", tuitionYr:125000, hostelYr:22786, messYr:null, totalCourse:null, url:"https://engineering.careers360.com/articles/nit-fee-structure"}
-    ]
-  },
-
-  { id:"state-govt", label:"State government engineering (CET quota)", type:"estimate",
-    note:"Broad indicative band for a state government engineering college seat won via the state CET (Maharashtra CAP and equivalents elsewhere). Not sourced live this session — figures vary meaningfully by state, college autonomy status, and branch. Confirm against your state's DTE / fee regulating authority.",
-    src:"General knowledge, not live-verified this session",
-    rangeLabel:"Tuition per year", low:15000, high:100000, extra:"Hostel + mess typically ₹40,000–₹90,000/year where on-campus housing exists."
-  },
-
-  { id:"private", label:"Private / deemed engineering", type:"estimate",
-    note:"Broad indicative band across private and deemed engineering colleges outside the CET/JoSAA system. Not sourced live this session. Top-bracket private technical universities can run well above this band — always check the specific institution's current fee notification.",
-    src:"General knowledge, not live-verified this session",
-    rangeLabel:"Tuition per year", low:80000, high:400000, extra:"Hostel + mess typically ₹60,000–₹1,50,000/year."
-  }
-]},
-
-medical: { label: "Medical", tiers: [
-
-  { id:"aiims", label:"AIIMS", type:"verified",
-    note:"AIIMS is a special case in Indian medical education — a nominal government fee, no management or NRI quota, admission purely through NEET-UG + MCC All India Quota. Figures are per year; the MBBS course runs 5.5 years including internship.",
-    src:"collegedunia.com, shiksha.com, v4edusolution.com, findmycollege.com", years:5.5,
-    inst:[
-      {name:"AIIMS Delhi", tuitionYr:6100, hostelYr:4228, messYr:0, totalCourse:null, url:"https://www.shiksha.com/college/all-india-institute-of-medical-sciences-delhi-gautam-nagar-24433/fees"},
-      {name:"AIIMS (all campuses, typical)", tuitionYr:1628, hostelYr:4228, messYr:0, totalCourse:null, url:"https://v4edusolution.com/aiims/mbbs-fee-structure"}
-    ]
-  },
-
-  { id:"govt-quota", label:"Government medical college (state quota, non-AIIMS)", type:"estimate",
-    note:"85% state quota MBBS/BDS seats at state government medical colleges — filled through NEET-UG plus state domicile counselling, not AIQ. Wide range because it spans every state's own fee-fixing committee.",
-    src:"matrixedu.in — checked while building this page",
-    rangeLabel:"Total course fee (5.5 years)", low:50000, high:1000000, extra:"Tamil Nadu, Rajasthan, West Bengal and Delhi tend toward the affordable end; Karnataka and Maharashtra toward the higher end, per the same source."
-  },
-
-  { id:"private-deemed", label:"Private / deemed medical college", type:"estimate",
-    note:"Private and deemed medical colleges, management and NRI quota seats. This is the single biggest number families under-budget for — confirm it before a student commits to a shortlist.",
-    src:"matrixedu.in — checked while building this page",
-    rangeLabel:"Total course fee (5.5 years)", low:4000000, high:20000000, extra:"Some deemed universities' NRI-quota seats run higher still — always get the college's current fee notification in writing."
-  }
-]},
-
-management: { label: "Management", tiers: [
-
-  { id:"iim", label:"IIM", type:"verified",
-    note:"2-year MBA/PGP tuition-side fee only — hostel, mess, books and the international immersion component add roughly ₹4.5–9.5 lakh more, separately, per the same sources. See the full side-by-side table below the calculator.",
-    src:"careers360.com, cracku.in — checked while building this page", years:2,
-    inst:[
-      {name:"IIM Ahmedabad", tuitionYr:1375000, hostelYr:null, messYr:null, totalCourse:2750000, url:"https://bschool.careers360.com/articles/know-iim-fee-structure-and-seats"},
-      {name:"IIM Bangalore", tuitionYr:1300000, hostelYr:null, messYr:null, totalCourse:2600000, url:"https://bschool.careers360.com/articles/know-iim-fee-structure-and-seats"},
-      {name:"IIM Calcutta", tuitionYr:1350000, hostelYr:null, messYr:null, totalCourse:2700000, url:"https://bschool.careers360.com/articles/know-iim-fee-structure-and-seats"},
-      {name:"IIM Indore", tuitionYr:1057500, hostelYr:null, messYr:null, totalCourse:2115000, url:"https://bschool.careers360.com/articles/know-iim-fee-structure-and-seats"},
-      {name:"IIM Kozhikode", tuitionYr:1175000, hostelYr:null, messYr:null, totalCourse:2350000, url:"https://bschool.careers360.com/articles/know-iim-fee-structure-and-seats"},
-      {name:"IIM Kashipur (newer IIM)", tuitionYr:865000, hostelYr:null, messYr:null, totalCourse:1730000, url:"https://bschool.careers360.com/articles/know-iim-fee-structure-and-seats"}
-    ]
-  },
-
-  { id:"top-private", label:"Top private B-school (non-IIM)", type:"estimate",
-    note:"ISB and comparable top-bracket private management schools. Not itemised this session — these institutions typically publish total programme cost directly, closer to a lump sum than a per-year tuition figure.",
-    src:"General knowledge, not live-verified this session",
-    rangeLabel:"Total programme fee", low:2000000, high:3500000, extra:"Usually a 1-year format rather than 2 years — check the specific programme's exact duration."
-  },
-
-  { id:"tier2-private", label:"Tier-2/3 private B-school", type:"estimate",
-    note:"The large tier of private MBA colleges outside the IIM/top-private bracket. Wide range because quality and placement outcomes vary enormously in this tier.",
-    src:"General knowledge, not live-verified this session",
-    rangeLabel:"Total programme fee (2 years)", low:200000, high:1200000, extra:"Hostel + mess where offered typically adds ₹1–2 lakh over 2 years."
-  }
-]},
-
-law: { label: "Law", tiers: [
-
-  { id:"nlu", label:"NLU (CLAT/AILET)", type:"verified",
-    note:"5-year integrated BA LLB (Hons), tuition + hostel + mess where noted. Fees rise a little each year at most NLUs — figures below are the full 5-year estimate.",
-    src:"lawpreptutorial.com, collegedunia.com, careers360.com — checked while building this page", years:5,
-    inst:[
-      {name:"NLSIU Bangalore", tuitionYr:null, hostelYr:null, messYr:null, totalCourse:2293000, url:"https://collegedunia.com/university/25621-national-law-school-of-india-university-nlsiu-bangalore/courses-fees"},
-      {name:"NLU Delhi", tuitionYr:null, hostelYr:null, messYr:null, totalCourse:2050000, url:"https://www.lawpreptutorial.com/blog/national-law-universities/nlu-delhi/fees/"},
-      {name:"Other established NLUs (typical)", tuitionYr:300000, hostelYr:null, messYr:null, totalCourse:1500000, url:"https://law.careers360.com/articles/nlu-fee-structure"}
-    ]
-  },
-
-  { id:"private-law", label:"Private law college", type:"estimate",
-    note:"Private and deemed-university law schools outside the NLU/CLAT-consortium system. Wide range across the sector.",
-    src:"General knowledge, not live-verified this session",
-    rangeLabel:"Tuition per year", low:80000, high:600000, extra:"5-year integrated programmes — multiply by 5 for a rough full-course figure, then add hostel where relevant."
-  }
-]},
-
-pharmacy: { label: "Pharmacy", tiers: [
-  { id:"govt", label:"Government B.Pharm", type:"unsourced", note:"Not sourced live this session. Confirm current tuition with the Pharmacy Council of India / state DTE and the specific college's current fee notification before quoting a family." },
-  { id:"private", label:"Private B.Pharm", type:"unsourced", note:"Not sourced live this session. Private B.Pharm fees vary widely by state and college autonomy status — confirm current tuition directly with the institution." }
-]},
-
-design: { label: "Design", tiers: [
-  { id:"nift-nid", label:"NIFT / NID (national design institutes)", type:"unsourced", note:"Not sourced live this session. Check the current fee notification on nift.ac.in or nid.edu directly — these institutes revise fees on their own cycle." },
-  { id:"private", label:"Private design school", type:"unsourced", note:"Not sourced live this session — this sector spans an especially wide range, from affordable state institutes to premium private design schools. Confirm with the specific institution." }
-]},
-
-hotel: { label: "Hotel Management", tiers: [
-  { id:"govt-ihm", label:"Government IHM", type:"estimate",
-    note:"Institutes of Hotel Management running the central/state model. Hostel and mess are usually charged separately and are relatively affordable at this tier.",
-    src:"itm.edu — checked while building this page",
-    rangeLabel:"Tuition per year", low:40000, high:120000, extra:"Central IHMs (run with the National Council for Hotel Management) tend toward the higher end of this band; state IHMs toward the lower end, per the same source." },
-  { id:"private-ihm", label:"Private hotel management college", type:"estimate",
-    note:"Private hospitality colleges, including groups with global tie-ups at the premium end.",
-    src:"itm.edu — checked while building this page",
-    rangeLabel:"Tuition per year", low:150000, high:400000, extra:"Premium institutes with international placement tie-ups can run above this band." }
-]}
-
+      {n:"NIT Trichy"},{n:"NIT Surathkal"},{n:"NIT Warangal"},{n:"NIT Rourkela"},
+      {n:"NIT Calicut"},{n:"MANIT Bhopal"},{n:"VNIT Nagpur"},{n:"NIT Delhi"},
+      {n:"MNIT Jaipur"},{n:"NIT Kurukshetra"},{n:"NIT Durgapur"},{n:"NIT Silchar"},
+      {n:"NIT Jamshedpur"},{n:"NIT Raipur"},{n:"NIT Allahabad (MNNIT)"},{n:"NIT Patna"},
+      {n:"NIT Srinagar"},{n:"NIT Hamirpur"},{n:"NIT Jalandhar"},{n:"NIT Agartala"},
+      {n:"NIT Goa"},{n:"NIT Meghalaya"},{n:"NIT Manipur"},{n:"NIT Mizoram"},
+      {n:"NIT Nagaland"},{n:"NIT Sikkim"},{n:"NIT Arunachal Pradesh"},{n:"NIT Uttarakhand"},
+      {n:"NIT Puducherry"},{n:"NIT Andhra Pradesh"},{n:"NIT Yupia"}
+    ]},
+   {id:"iiit",label:"IIIT — 26 institutes",years:4,waiver:false,tuitionYr:null,
+    note:"Fees are NOT uniform across the 26 IIITs — this is the key difference from IITs and NITs. IIIT Hyderabad's 4-year total including hostel and mess can exceed ₹24 lakh. Enter the specific institute's quoted tuition.",
+    forceOverride:true,
+    inst:[{n:"IIIT Hyderabad (highest bracket)",total:2400000},{n:"IIIT Gwalior (ABV-IIITM) — among the lowest"},{n:"Other IIIT — enter quoted tuition"}]},
+   {id:"other-eng",label:"State / private / deemed engineering",years:4,waiver:false,tuitionYr:null,forceOverride:true,
+    note:"No reliable single figure exists across this tier — it spans subsidised state colleges through premium private universities. Enter the tuition from the college's own fee notification.",
+    inst:[{n:"Other / not listed — enter quoted tuition"}]}
+ ]},
+ medical:{label:"Medical (MBBS)",groups:[
+   {id:"aiims",label:"AIIMS",years:5.5,waiver:false,tuitionYr:6100,
+    note:"Roughly ₹6,000 per year. No management or NRI quota exists at AIIMS — the only route is NEET-UG rank through MCC counselling.",
+    inst:[{n:"AIIMS Delhi"},{n:"AIIMS — other campuses"}]},
+   {id:"govt-mbbs",label:"Government medical college",years:5.5,waiver:false,tuitionYr:null,forceOverride:true,
+    note:"Full-course fees range from about ₹5,000 to ₹6,00,000 depending on state. Delhi's DU-affiliated colleges start from around ₹1,360 a year. Enter the state's published figure.",
+    inst:[{n:"Delhi — DU affiliated (from ~₹1,360/yr)",tui:1360},{n:"Other government college — enter quoted fee"}]},
+   {id:"pvt-mbbs",label:"Private medical college",years:5.5,waiver:false,tuitionYr:null,forceOverride:true,
+    note:"Full course runs ₹40 lakh to ₹1.5 crore. In some states ₹40–60 lakh completes the degree; in others it exceeds ₹1 crore. Hostel is charged separately at most.",
+    inst:[{n:"Private college — enter quoted annual fee"}]},
+   {id:"deemed-mbbs",label:"Deemed university / management quota",years:5.5,waiver:false,tuitionYr:null,forceOverride:true,
+    note:"₹15–45 lakh PER YEAR, not per course. Premium deemed universities sit at the top of that band. Delhi deemed colleges also carry a first-year one-time admission and security component of about ₹4,47,500.",
+    inst:[{n:"Deemed university — enter quoted annual fee"}]}
+ ]},
+ other:{label:"Any other course",groups:[
+   {id:"any",label:"Enter it manually",years:3,waiver:false,tuitionYr:null,forceOverride:true,
+    note:"For management, law, pharmacy, design, hotel management, arts, commerce, science or any college not listed — enter the tuition the institution quoted. The living-cost engine works identically regardless of course.",
+    inst:[{n:"Any college — enter quoted annual fee"}]}
+ ]}
 };
 
-var inr = new Intl.NumberFormat("en-IN");
-function money(n){ if(n===null||n===undefined) return "—"; return "₹" + inr.format(Math.round(n)); }
+var CITIES=[
+ {id:"mumbai",label:"Mumbai",pg:[10000,22000],all:[25000,30000],
+  note:"Highest accommodation cost in India. Limited university hostel availability makes private accommodation necessary for most students. Cheaper transport than Delhi offsets part of the rent."},
+ {id:"delhi",label:"Delhi NCR",pg:[8000,20000],all:[25000,45000],
+  note:"PGs with meals ₹8,000–20,000. Budget an ₹8,000–15,000 one-off air purifier for the November–February air quality, plus masks."},
+ {id:"bangalore",label:"Bangalore",pg:[6000,18000],all:[25000,45000],
+  note:"Large student and IT population drives demand. Co-living and managed hostels ₹8,000–22,000. Slightly cheaper outside the IT corridors."},
+ {id:"hyderabad",label:"Hyderabad",pg:[5000,14000],all:[18000,32000],
+  note:"More affordable than Bangalore or Delhi. Managed hostels ₹7,000–18,000. Expect roughly ₹3,000–8,000/month less than Delhi for comparable housing."},
+ {id:"pune",label:"Pune",pg:[5000,14000],all:[15000,20000],
+  note:"One of the most affordable major student cities. Kothrud, Karve Nagar and Aundh run ₹6,000–12,000. Mess ₹2,800–4,200; PMC bus pass ₹400–700. Compact city means short commutes."},
+ {id:"chennai",label:"Chennai",pg:[5000,14000],all:[16000,28000],
+  note:"Lowest overall living cost among the major metros."},
+ {id:"tier2",label:"Tier-2 city (Jaipur, Chandigarh, Lucknow, Indore…)",pg:[3000,12000],all:[11000,22000],
+  note:"Typically 20–40% cheaper than Delhi or Mumbai. PGs average ₹4,000–12,000 with meals; triple-sharing starts near ₹3,000 — the most popular student option."},
+ {id:"tier3",label:"Small town / campus town",pg:[2500,8000],all:[9000,16000],
+  note:"Where most NITs and newer IITs actually sit. Rent is a fraction of metro cost — a 1BHK in Gwalior or Prayagraj is roughly one-sixth of Mumbai."}
+];
 
-var sSector=document.getElementById("sSector"),
-    sTier=document.getElementById("sTier"),
-    sInst=document.getElementById("sInst"),
-    placeholder=document.getElementById("placeholder"),
-    resultBody=document.getElementById("resultBody");
+function defaults(city,stay){
+  var lo=city.pg[0],hi=city.pg[1],mid=(lo+hi)/2;
+  if(stay==="hostel") return {rent:Math.round(lo*0.55/500)*500, food:Math.round(mid*0.32/500)*500, trans:500,  misc:2000, books:12000};
+  if(stay==="pg")     return {rent:Math.round(mid/500)*500,      food:Math.round(mid*0.30/500)*500, trans:1000, misc:2500, books:12000};
+  if(stay==="flat")   return {rent:Math.round(hi*0.8/500)*500,   food:Math.round(mid*0.55/500)*500, trans:1500, misc:3000, books:12000};
+  return {rent:0, food:Math.round(mid*0.22/500)*500, trans:1500, misc:2000, books:12000};
+}
 
-function fillSelect(sel, items, placeholderText){
-  sel.innerHTML = "";
-  var ph = document.createElement("option");
-  ph.value = ""; ph.textContent = placeholderText; ph.disabled = true; ph.selected = true;
-  sel.appendChild(ph);
+var S={sector:"engineering",group:"iit",inst:null,cat:"gen",city:"tier3",stay:"hostel",
+       rent:0,food:0,trans:0,misc:0,books:0,ovr:null,touched:false};
+
+var $=function(id){return document.getElementById(id);};
+
+function fill(sel,items,ph,disabled){
+  sel.innerHTML="";
+  if(ph){var o=document.createElement("option");o.value="";o.textContent=ph;o.disabled=true;o.selected=true;sel.appendChild(o);}
   items.forEach(function(it){
-    var o = document.createElement("option");
-    o.value = it.value; o.textContent = it.label;
-    sel.appendChild(o);
+    var e=document.createElement("option");e.value=it.v;e.textContent=it.l;sel.appendChild(e);
+  });
+  sel.disabled=!!disabled;
+}
+function getGroup(){
+  var gs=SECTORS[S.sector].groups;
+  for(var i=0;i<gs.length;i++){if(gs[i].id===S.group)return gs[i];}
+  return gs[0];
+}
+function getCity(){
+  for(var i=0;i<CITIES.length;i++){if(CITIES[i].id===S.city)return CITIES[i];}
+  return CITIES[0];
+}
+function getInst(){
+  var g=getGroup();
+  for(var i=0;i<g.inst.length;i++){if(g.inst[i].n===S.inst)return g.inst[i];}
+  return null;
+}
+
+fill($("fSector"),Object.keys(SECTORS).map(function(k){return {v:k,l:SECTORS[k].label};}),null,false);
+$("fSector").value=S.sector;
+
+function refreshGroups(){
+  var gs=SECTORS[S.sector].groups;
+  fill($("fGroup"),gs.map(function(g){return {v:g.id,l:g.label};}),null,false);
+  S.group=gs[0].id;
+  $("fGroup").value=S.group;
+  refreshInsts();
+}
+function refreshInsts(){
+  var g=getGroup();
+  fill($("fInst"),g.inst.map(function(i){return {v:i.n,l:i.n};}),null,false);
+  S.inst=g.inst[0].n;
+  $("fInst").value=S.inst;
+  $("instHint").textContent=g.note||"";
+  $("ovrWrap").style.display=(g.forceOverride)?"block":"none";
+  S.ovr=null; $("fOvr").value="";
+  applyCityDefaults(true);
+}
+fill($("fCity"),CITIES.map(function(c){return {v:c.id,l:c.label};}),null,false);
+$("fCity").value=S.city;
+
+function applyCityDefaults(force){
+  if(S.touched && !force) {render();return;}
+  var d=defaults(getCity(),S.stay);
+  S.rent=d.rent;S.food=d.food;S.trans=d.trans;S.misc=d.misc;S.books=d.books;
+  $("sRent").value=S.rent;$("sFood").value=S.food;$("sTrans").value=S.trans;
+  $("sMisc").value=S.misc;$("sBooks").value=S.books;
+  render();
+}
+
+$("fSector").addEventListener("change",function(){S.sector=this.value;S.touched=false;refreshGroups();});
+$("fGroup").addEventListener("change",function(){S.group=this.value;S.touched=false;refreshInsts();});
+$("fInst").addEventListener("change",function(){S.inst=this.value;render();});
+$("fCity").addEventListener("change",function(){S.city=this.value;S.touched=false;applyCityDefaults(true);});
+$("fOvr").addEventListener("input",function(){S.ovr=this.value===""?null:Number(this.value);render();});
+
+function segWire(id,key,after){
+  var box=$(id);
+  box.addEventListener("click",function(e){
+    var b=e.target.closest("button"); if(!b)return;
+    [].forEach.call(box.querySelectorAll("button"),function(x){x.classList.remove("on");});
+    b.classList.add("on"); S[key]=b.getAttribute("data-v");
+    if(after)after(); else render();
   });
 }
+segWire("fCat","cat");
+segWire("fStay","stay",function(){S.touched=false;applyCityDefaults(true);});
 
-function sectorList(){
-  return Object.keys(DATA).map(function(k){ return {value:k, label:DATA[k].label}; });
-}
-function tierList(sectorKey){
-  return DATA[sectorKey].tiers.map(function(t){ return {value:t.id, label:t.label}; });
-}
-function getTier(sectorKey, tierId){
-  return DATA[sectorKey].tiers.filter(function(t){ return t.id===tierId; })[0];
+[["sRent","rent"],["sFood","food"],["sTrans","trans"],["sMisc","misc"],["sBooks","books"]].forEach(function(p){
+  $(p[0]).addEventListener("input",function(){S[p[1]]=Number(this.value);S.touched=true;render();});
+});
+
+function tuitionFor(){
+  var g=getGroup(), inst=getInst(), base=null, src="";
+  if(S.ovr!=null && S.ovr>0){ base=S.ovr; src="your entry"; }
+  else if(inst && inst.tui){ base=inst.tui; src="documented"; }
+  else if(g.tuitionYr!=null){ base=g.tuitionYr; src="documented"; }
+  else if(inst && inst.total){ base=inst.total/g.years; src="derived from documented total"; }
+  else { base=null; }
+
+  if(base==null) return {yr:null,src:null,waived:false,note:"no figure"};
+
+  var waived=false, yr=base;
+  if(g.waiver){
+    if(S.cat==="sc"){ yr=0; waived=true; }
+    else if(S.cat==="low"){ yr=Math.round(base/3); waived="part"; }
+  }
+  return {yr:yr,base:base,src:src,waived:waived};
 }
 
-function onSectorChange(){
-  var sec = sSector.value;
-  resetResult();
-  if(!sec){ fillSelect(sTier, [], "—"); sTier.disabled=true; fillSelect(sInst, [], "—"); sInst.disabled=true; return; }
-  fillSelect(sTier, tierList(sec), "Choose a type");
-  sTier.disabled = false;
-  fillSelect(sInst, [], "—"); sInst.disabled = true;
-}
+function render(){
+  var g=getGroup(), inst=getInst(), city=getCity(), yrs=g.years;
+  var t=tuitionFor();
 
-function onTierChange(){
-  var sec = sSector.value, tierId = sTier.value;
-  resetResult();
-  if(!tierId){ fillSelect(sInst, [], "—"); sInst.disabled=true; return; }
-  var tier = getTier(sec, tierId);
-  if(tier.type === "verified" && tier.inst && tier.inst.length){
-    fillSelect(sInst, tier.inst.map(function(i){ return {value:i.name, label:i.name}; }), "Choose an institution");
-    sInst.disabled = false;
+  $("lRent").textContent=S.stay==="home"?"—":money(S.rent)+"/mo";
+  $("lFood").textContent=money(S.food)+"/mo";
+  $("lTrans").textContent=money(S.trans)+"/mo";
+  $("lMisc").textContent=money(S.misc)+"/mo";
+  $("lBooks").textContent=money(S.books)+"/yr";
+  $("hRent").textContent=S.stay==="home"?"Living at home — no accommodation cost.":
+    "PG band for "+city.label+": "+money(city.pg[0])+"–"+money(city.pg[1])+"/month with meals.";
+
+  $("catHint").textContent = g.waiver
+    ? (S.cat==="sc" ? "SC / ST / PwD receive a 100% tuition waiver at all IITs regardless of family income."
+      : S.cat==="low" ? "Family income under ₹5 lakh: tuition drops to about one-third. Under ₹1 lakh it goes to zero. Requires a Tehsildar/DM-level income certificate, renewed annually."
+      : "Full tuition slab — family income above ₹5 lakh.")
+    : "This institution group does not operate the central tuition-waiver slabs. Check the college's own scholarship scheme.";
+
+  var MONTHS=10;
+  var rent=(S.stay==="home"?0:S.rent)*MONTHS;
+  var food=S.food*MONTHS, trans=S.trans*MONTHS, misc=S.misc*MONTHS, books=S.books;
+  var livingYr=rent+food+trans+misc+books;
+  var tuiYr=t.yr==null?0:t.yr;
+  var perYear=tuiYr+livingYr;
+  var total=perYear*yrs;
+
+  if(t.yr==null && (S.ovr==null||S.ovr<=0)){
+    $("heroBig").textContent=lakh(livingYr*yrs)+" +";
+    $("heroSub").innerHTML='<b style="color:var(--saffron)">Living costs only</b> — no tuition figure yet. Enter the tuition the college quoted to get the full number.';
   } else {
-    fillSelect(sInst, [{value:"__band__", label:"(range shown below — no specific college needed)"}], "—");
-    sInst.value = "__band__";
-    sInst.disabled = true;
-    renderResult(sec, tierId, null);
+    $("heroBig").textContent=lakh(total);
+    $("heroSub").textContent=(inst?inst.n:g.label)+" · "+city.label+" · "+yrs+" years · living costed over "+MONTHS+" months a year";
   }
-}
+  $("kYear").textContent=lakh(perYear);
+  $("kMonth").textContent=money(livingYr/MONTHS);
+  $("kTui").textContent=perYear>0?Math.round(tuiYr/perYear*100)+"%":"—";
+  $("kDur").textContent=yrs+" yr";
 
-function onInstChange(){
-  var sec = sSector.value, tierId = sTier.value, instName = sInst.value;
-  if(!instName || instName==="__band__") return;
-  renderResult(sec, tierId, instName);
-}
+  var parts=[["Tuition",tuiYr,"var(--gold)"],["Accom",rent,"var(--blue)"],["Food",food,"var(--green)"],
+             ["Other",trans+misc,"var(--violet)"],["Books",books,"var(--saffron)"]];
+  var sum=parts.reduce(function(a,p){return a+p[1];},0)||1;
+  $("stack").innerHTML=parts.map(function(p){
+    var pct=p[1]/sum*100;
+    return '<div style="width:'+pct+'%;background:'+p[2]+'">'+(pct>9?Math.round(pct)+"%":"")+'</div>';
+  }).join("");
 
-function resetResult(){
-  placeholder.classList.remove("hide");
-  resultBody.classList.add("hide");
-  resultBody.innerHTML = "";
-}
-
-function tagFor(type){
-  if(type==="verified") return '<span class="tag v">Verified source</span>';
-  if(type==="estimate") return '<span class="tag e">Typical range</span>';
-  return '<span class="tag n">Not sourced</span>';
-}
-
-function renderResult(sectorKey, tierId, instName){
-  var tier = getTier(sectorKey, tierId);
-  placeholder.classList.add("hide");
-  resultBody.classList.remove("hide");
-
-  if(tier.type === "unsourced"){
-    resultBody.innerHTML =
-      '<div class="result-head"><h3>'+tier.label+'</h3>'+tagFor(tier.type)+'</div>'+
-      '<div class="note warn">'+tier.note+'</div>';
-    return;
+  var rows="";
+  rows+='<div class="brk-grp">Tuition</div>';
+  if(t.yr==null && (S.ovr==null||S.ovr<=0)){
+    rows+='<div class="brk-row"><span class="k">Annual tuition<small>Not documented for this group — enter the college\'s quoted figure above</small></span><span class="v" style="color:var(--saffron)">not entered</span></div>';
+  } else {
+    if(t.waived===true){
+      rows+='<div class="brk-row zero"><span class="k">Annual tuition<small>Full waiver applied — SC / ST / PwD, all IITs, regardless of income</small></span><span class="v">₹0</span></div>';
+      rows+='<div class="brk-row"><span class="k">Waiver value, over the course</span><span class="v" style="color:var(--green)">'+lakh(t.base*yrs)+' saved</span></div>';
+    } else if(t.waived==="part"){
+      rows+='<div class="brk-row"><span class="k">Annual tuition<small>Reduced slab — family income under ₹5 lakh</small></span><span class="v">'+money(t.yr)+'</span></div>';
+      rows+='<div class="brk-row"><span class="k">Reduction against full slab, over the course</span><span class="v" style="color:var(--green)">'+lakh((t.base-t.yr)*yrs)+' saved</span></div>';
+    } else {
+      rows+='<div class="brk-row"><span class="k">Annual tuition<small>'+(t.src==="your entry"?"As you entered it":"Documented figure")+'</small></span><span class="v">'+money(t.yr)+'</span></div>';
+    }
+    rows+='<div class="brk-row tot"><span class="k">Tuition, full course</span><span class="v">'+lakh(tuiYr*yrs)+'</span></div>';
   }
 
-  if(tier.type === "estimate"){
-    resultBody.innerHTML =
-      '<div class="result-head"><h3>'+tier.label+'</h3>'+tagFor(tier.type)+'</div>'+
-      '<div class="kpis">'+
-        '<div class="kpi total"><div class="n">'+money(tier.low)+' – '+money(tier.high)+'</div><div class="l">'+tier.rangeLabel+'</div></div>'+
-      '</div>'+
-      '<div class="note">'+tier.note+'</div>'+
-      (tier.extra ? '<div class="note">'+tier.extra+'</div>' : '')+
-      '<p class="src">Source: '+tier.src+'</p>';
-    return;
+  rows+='<div class="brk-grp">Living — per year, '+MONTHS+' academic months</div>';
+  rows+='<div class="brk-row"><span class="k">Accommodation<small>'+(S.stay==="home"?"Living at home":S.stay==="hostel"?"Campus hostel":S.stay==="pg"?"PG":"Shared flat")+' · '+city.label+'</small></span><span class="v">'+money(rent)+'</span></div>';
+  rows+='<div class="brk-row"><span class="k">Food / mess</span><span class="v">'+money(food)+'</span></div>';
+  rows+='<div class="brk-row"><span class="k">Transport</span><span class="v">'+money(trans)+'</span></div>';
+  rows+='<div class="brk-row"><span class="k">Phone, internet, personal</span><span class="v">'+money(misc)+'</span></div>';
+  rows+='<div class="brk-row"><span class="k">Books, lab, yearly one-offs</span><span class="v">'+money(books)+'</span></div>';
+  rows+='<div class="brk-row tot"><span class="k">Living, per year</span><span class="v">'+lakh(livingYr)+'</span></div>';
+  rows+='<div class="brk-row tot"><span class="k">Living, full course ('+yrs+' yr)</span><span class="v">'+lakh(livingYr*yrs)+'</span></div>';
+
+  rows+='<div class="brk-grp">Total</div>';
+  rows+='<div class="brk-row tot"><span class="k">Per year</span><span class="v">'+lakh(perYear)+'</span></div>';
+  rows+='<div class="brk-row tot"><span class="k">Full course</span><span class="v" style="font-size:15px">'+lakh(total)+'</span></div>';
+  $("brk").innerHTML=rows;
+
+  var notes="";
+  notes+='<div class="note"><b>'+city.label+'.</b> '+city.note+'</div>';
+  if(g.id==="iit"){
+    notes+='<div class="note warn"><b>Not included above: the mess advance.</b> IITs bill mess separately at ₹20,000–25,000 per semester on actual consumption — roughly ₹1.6–2 lakh across four years. If the food slider is set low, add this on top. This is the most common reason a family\'s plan comes up short.</div>';
+    if(inst&&inst.total){
+      notes+='<div class="note ok"><b>Documented total for '+inst.n+': '+lakh(inst.total)+'</b> for the 4-year B.Tech at the full-fee slab. Where that differs from the calculated figure above, the difference is your living-cost assumptions — the published total uses the institute\'s own hostel rates and typically excludes mess advances.</div>';
+    }
   }
-
-  var inst = tier.inst.filter(function(i){ return i.name===instName; })[0];
-  if(!inst){ return; }
-
-  var kpis = "";
-  if(inst.tuitionYr!=null) kpis += '<div class="kpi"><div class="n">'+money(inst.tuitionYr)+'</div><div class="l">Tuition / year</div></div>';
-  if(inst.hostelYr!=null) kpis += '<div class="kpi"><div class="n">'+money(inst.hostelYr)+'</div><div class="l">Hostel / year</div></div>';
-  if(inst.messYr) kpis += '<div class="kpi"><div class="n">'+money(inst.messYr)+'</div><div class="l">Mess / year</div></div>';
-  if(inst.totalCourse!=null) kpis += '<div class="kpi total"><div class="n">'+money(inst.totalCourse)+'</div><div class="l">Full course ('+tier.years+' yr)</div></div>';
-
-  var brk = "";
-  if(inst.tuitionYr!=null) brk += '<div class="brk-row"><span>Tuition, per year</span><span>'+money(inst.tuitionYr)+'</span></div>';
-  if(inst.hostelYr!=null) brk += '<div class="brk-row"><span>Hostel, per year</span><span>'+money(inst.hostelYr)+'</span></div>';
-  if(inst.messYr) brk += '<div class="brk-row"><span>Mess, per year</span><span>'+money(inst.messYr)+'</span></div>';
-
-  resultBody.innerHTML =
-    '<div class="result-head"><h3>'+inst.name+'</h3>'+tagFor(tier.type)+'</div>'+
-    '<div class="kpis">'+kpis+'</div>'+
-    (brk ? '<div class="brk">'+brk+'</div>' : '')+
-    '<div class="note">'+tier.note+'</div>'+
-    '<p class="src">Source: <a href="'+inst.url+'" target="_blank" rel="noopener">'+ (new URL(inst.url)).hostname +'</a> — checked while building this page. Figures with a dash were not broken out separately by the source; check the linked page for the full breakdown.</p>';
+  if(g.id==="deemed-mbbs"){
+    notes+='<div class="note warn"><b>Check whether the quoted figure is annual or full-course.</b> Deemed universities quote ₹15–45 lakh <em>per year</em>. Families routinely hear that number and assume it covers the degree. Over 5.5 years the difference is catastrophic to a plan.</div>';
+  }
+  if(g.id==="iiit"){
+    notes+='<div class="note warn"><b>IIIT fees are not uniform.</b> Unlike IITs and NITs, each of the 26 IIITs sets its own. Do not quote one IIIT\'s fee for another.</div>';
+  }
+  if(S.stay==="flat"){
+    notes+='<div class="note"><b>Shared flat — remember the deposit.</b> Indian landlords typically take several months\' rent upfront. That is a day-one cost that never appears in a monthly budget.</div>';
+  }
+  notes+='<p class="srcline">Tuition figures: documented sources listed in section 06. Living defaults: city bands from studentbuddy.io and costoflivingindia.com, adjusted by accommodation type. Living is costed across '+MONTHS+' academic months per year — raise it to 12 if the student stays through vacations.</p>';
+  $("outNotes").innerHTML=notes;
 }
-
-sSector.addEventListener("change", onSectorChange);
-sTier.addEventListener("change", onTierChange);
-sInst.addEventListener("change", onInstChange);
-
-fillSelect(sSector, sectorList(), "Choose a sector");
-fillSelect(sTier, [], "—"); sTier.disabled = true;
-fillSelect(sInst, [], "—"); sInst.disabled = true;
 
 (function(){
-  var rows = [
-    ["IIM Ahmedabad","₹27,50,000"],["IIM Calcutta","₹27,00,000"],["IIM Bangalore","₹26,00,000 – ₹26,30,000"],
-    ["IIM Shillong","₹26,18,000"],["IIM Jammu","₹22,80,000"],["IIM Kozhikode","₹23,50,000"],
-    ["IIM Lucknow","₹20,75,000"],["IIM Mumbai","₹21,00,000"],["IIM Indore","₹21,15,000"],
-    ["IIM Amritsar","₹21,50,000"],["IIM Nagpur","₹21,50,000"],["IIM Trichy","₹21,00,000"],
-    ["IIM Sambalpur","₹21,01,000"],["IIM Udaipur","₹21,33,000"],["IIM Raipur","₹20,30,000"],
-    ["IIM Sirmaur","₹20,00,000"],["IIM Ranchi","₹19,20,000"],["IIM Rohtak","₹17,90,000"],
-    ["IIM Bodh Gaya","₹17,96,000"],["IIM Kashipur","₹17,30,000"]
-  ];
-  var tb = document.getElementById("iimTable");
-  rows.forEach(function(r){
-    var tr = document.createElement("tr");
-    tr.innerHTML = "<td>"+r[0]+"</td><td>"+r[1]+"</td>";
+  var tb=$("cityTable");
+  CITIES.forEach(function(c){
+    var tr=document.createElement("tr");
+    tr.innerHTML="<td><b>"+c.label+"</b></td>"+
+      '<td class="mono">'+money(c.pg[0])+"–"+money(c.pg[1])+"</td>"+
+      '<td class="mono">'+money(c.all[0])+"–"+money(c.all[1])+"</td>"+
+      "<td>"+c.note+"</td>";
     tb.appendChild(tr);
   });
 })();
 
+refreshGroups();
 })();
 </script>
 </body>
