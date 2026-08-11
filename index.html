@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>College Mantra — Admission Desk</title>
+<meta property="og:title" content="College Mantra — Admission Desk">
+<meta property="og:description" content="Internal file. Counselling desk command centre.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;0,6..96,700;1,6..96,400&family=Public+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0B1220;
+  --file:#121A2B;
+  --file2:#182138;
+  --rule:rgba(216,169,74,.20);
+  --rule-soft:rgba(216,169,74,.10);
+  --gold:#D8A94A;
+  --gold-dim:rgba(216,169,74,.12);
+  --saffron:#E1683C;
+  --saffron-dim:rgba(225,104,60,.13);
+  --green:#5FB98E;
+  --green-dim:rgba(95,185,142,.13);
+  --paper:#EDE6D6;
+  --dim:#93A0B8;
+  --faint:#61708C;
+  --r:4px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--navy);color:var(--paper);
+  font-family:'Public Sans',system-ui,sans-serif;font-size:15px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+body.locked{overflow:hidden}
+a{color:var(--gold);text-decoration:none;border-bottom:1px solid var(--rule)}
+a:hover{border-bottom-color:var(--gold)}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+
+.gate{
+  position:fixed;inset:0;z-index:100;background:var(--navy);
+  display:flex;align-items:center;justify-content:center;padding:24px;
+  background-image:repeating-linear-gradient(0deg,var(--rule-soft) 0px,var(--rule-soft) 1px,transparent 1px,transparent 34px);
+}
+.gate.gone{display:none}
+.cover{
+  width:100%;max-width:520px;background:var(--file);
+  border:1px solid var(--rule);border-top:3px solid var(--gold);
+  padding:40px 34px 34px;position:relative;
+}
+.cover-eyebrow{
+  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--gold);margin:0 0 18px;
+}
+.cover h1{
+  font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(34px,7vw,46px);
+  line-height:1.02;margin:0 0 6px;letter-spacing:-.01em;
+}
+.cover h1 em{font-style:italic;color:var(--gold);display:block;font-size:.62em;font-weight:400;margin-top:6px}
+.cover-meta{
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--faint);
+  border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+  padding:12px 0;margin:22px 0 24px;display:flex;flex-wrap:wrap;gap:6px 20px;
+}
+.gate-label{
+  display:block;font-family:'JetBrains Mono',monospace;font-size:10px;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-bottom:8px;
+}
+.gate-row{display:flex;gap:10px}
+.gate input{
+  flex:1;background:var(--navy);border:1px solid var(--rule);color:var(--paper);
+  padding:13px 14px;font-family:'JetBrains Mono',monospace;font-size:15px;
+  letter-spacing:.3em;border-radius:var(--r);
+}
+.gate input:focus{border-color:var(--gold);outline:none}
+.gate button{
+  background:var(--gold);color:#0B1220;border:none;padding:13px 22px;
+  font-family:'Public Sans',sans-serif;font-weight:700;font-size:14px;
+  border-radius:var(--r);cursor:pointer;letter-spacing:.02em;
+}
+.gate button:hover{background:#E8BC63}
+.gate-err{
+  color:var(--saffron);margin:12px 0 0;min-height:19px;
+  font-family:'JetBrains Mono',monospace;font-size:12px;
+}
+.gate-note{
+  margin:24px 0 0;padding-top:16px;border-top:1px solid var(--rule);
+  font-size:12px;color:var(--faint);line-height:1.55;
+}
+.stamp{
+  position:absolute;top:34px;right:26px;width:118px;height:118px;
+  border:3px double var(--green);border-radius:50%;color:var(--green);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',monospace;font-weight:600;text-align:center;
+  transform:rotate(-14deg) scale(2.4);opacity:0;pointer-events:none;
+}
+.stamp.hit{animation:thud .45s cubic-bezier(.2,.9,.3,1) forwards}
+.stamp span{font-size:15px;letter-spacing:.08em;line-height:1.2}
+.stamp small{font-size:8px;letter-spacing:.14em;margin-top:5px;opacity:.8}
+@keyframes thud{
+  0%{transform:rotate(-14deg) scale(2.4);opacity:0}
+  60%{transform:rotate(-14deg) scale(.94);opacity:1}
+  100%{transform:rotate(-14deg) scale(1);opacity:1}
+}
+.shake{animation:shake .32s}
+@keyframes shake{
+  0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}
+  40%{transform:translateX(7px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}
+}
+
+.shell{max-width:1180px;margin:0 auto;padding:0 22px 100px}
+.masthead{padding:46px 0 30px;border-bottom:1px solid var(--rule)}
+.mast-top{
+  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:14px;
+}
+.masthead h1{
+  font-family:'Bodoni Moda',serif;font-weight:700;
+  font-size:clamp(38px,6.5vw,66px);line-height:.98;margin:0 0 12px;letter-spacing:-.015em;
+}
+.masthead h1 em{font-style:italic;font-weight:400;color:var(--gold)}
+.mast-sub{color:var(--dim);max-width:62ch;margin:0 0 26px;font-size:16px}
+.desk{display:flex;flex-wrap:wrap;gap:10px}
+.person{
+  display:flex;align-items:center;gap:9px;background:var(--file);
+  border:1px solid var(--rule);border-radius:var(--r);padding:7px 13px 7px 8px;
+}
+.person i{
+  width:26px;height:26px;border-radius:50%;background:var(--gold-dim);color:var(--gold);
+  display:flex;align-items:center;justify-content:center;font-style:normal;
+  font-family:'Bodoni Moda',serif;font-weight:700;font-size:13px;
+}
+.person b{font-weight:600;font-size:14px}
+.person s{
+  text-decoration:none;font-family:'JetBrains Mono',monospace;
+  font-size:10px;color:var(--faint);letter-spacing:.1em;text-transform:uppercase;
+}
+
+.controls{
+  position:sticky;top:0;z-index:40;background:rgba(11,18,32,.94);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--rule);
+  padding:12px 0;margin-bottom:38px;
+}
+.controls-in{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.search{
+  flex:1;min-width:220px;background:var(--file);border:1px solid var(--rule);
+  color:var(--paper);padding:9px 13px;border-radius:var(--r);
+  font-family:'Public Sans',sans-serif;font-size:14px;
+}
+.search:focus{border-color:var(--gold);outline:none}
+.jump{display:flex;gap:6px;flex-wrap:wrap}
+.jump a{
+  font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.1em;
+  color:var(--dim);border:1px solid var(--rule);border-radius:var(--r);
+  padding:6px 9px;text-transform:uppercase;
+}
+.jump a:hover{color:var(--gold);border-color:var(--gold)}
+
+.ax{margin:0 0 62px;scroll-margin-top:74px}
+.ax-head{display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--gold);padding-bottom:10px;margin-bottom:8px;flex-wrap:wrap}
+.ax-tag{
+  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;
+  color:var(--navy);background:var(--gold);padding:3px 8px;border-radius:2px;
+  text-transform:uppercase;font-weight:600;white-space:nowrap;
+}
+.ax-head h2{
+  font-family:'Bodoni Moda',serif;font-weight:600;font-size:clamp(22px,3.4vw,30px);
+  margin:0;letter-spacing:-.01em;
+}
+.ax-note{color:var(--dim);font-size:14px;margin:0 0 22px;max-width:74ch}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.card{
+  background:var(--file);border:1px solid var(--rule);border-left:2px solid var(--gold);
+  border-radius:var(--r);padding:16px 17px;display:flex;flex-direction:column;gap:9px;
+}
+.card.mute{border-left-color:var(--faint)}
+.card.warn{border-left-color:var(--saffron)}
+.card.ok{border-left-color:var(--green)}
+.card h3{font-size:15.5px;font-weight:600;margin:0;line-height:1.3}
+.card p{margin:0;font-size:13.5px;color:var(--dim);line-height:1.6}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:2px}
+.chip{
+  font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.1em;
+  text-transform:uppercase;padding:3px 7px;border-radius:2px;
+  background:var(--gold-dim);color:var(--gold);border:1px solid var(--rule);
+}
+.chip.live{background:var(--green-dim);color:var(--green);border-color:rgba(95,185,142,.3)}
+.chip.hold{background:var(--saffron-dim);color:var(--saffron);border-color:rgba(225,104,60,.3)}
+.chip.grey{background:rgba(147,160,184,.09);color:var(--dim);border-color:rgba(147,160,184,.2)}
+.links{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;padding-top:8px}
+.links a{
+  font-family:'JetBrains Mono',monospace;font-size:11px;border:1px solid var(--rule);
+  padding:5px 9px;border-radius:var(--r);color:var(--gold);
+}
+.links a:hover{border-color:var(--gold);background:var(--gold-dim)}
+
+.tw{overflow-x:auto;border:1px solid var(--rule);border-radius:var(--r);background:var(--file)}
+table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:640px}
+th{
+  text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--gold);
+  padding:11px 14px;border-bottom:1px solid var(--rule);font-weight:600;white-space:nowrap;
+}
+td{padding:11px 14px;border-bottom:1px solid var(--rule-soft);vertical-align:top;color:var(--paper)}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover{background:var(--file2)}
+td small{color:var(--dim);font-size:12.5px;display:block;margin-top:3px}
+
+.flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:0;border:1px solid var(--rule);border-radius:var(--r);overflow:hidden}
+.step{padding:15px 16px;border-right:1px solid var(--rule);background:var(--file)}
+.step:last-child{border-right:none}
+.step b{display:block;font-size:14px;font-weight:600;margin-bottom:5px}
+.step em{
+  font-style:normal;font-family:'JetBrains Mono',monospace;font-size:10px;
+  color:var(--gold);letter-spacing:.14em;display:block;margin-bottom:7px;
+}
+.step p{margin:0;font-size:12.5px;color:var(--dim);line-height:1.55}
+
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.list{background:var(--file);border:1px solid var(--rule);border-radius:var(--r);padding:16px 18px}
+.list h4{font-family:'Bodoni Moda',serif;font-size:17px;font-weight:600;margin:0 0 12px}
+.list ul{margin:0;padding:0;list-style:none}
+.list li{
+  font-size:13.5px;padding:6px 0 6px 20px;position:relative;color:var(--paper);
+  border-bottom:1px solid var(--rule-soft);
+}
+.list li:last-child{border-bottom:none}
+.list li:before{content:"—";position:absolute;left:0;color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:11px;top:6px}
+
+.callout{
+  border:1px solid var(--rule);border-left:2px solid var(--saffron);
+  background:var(--file);border-radius:var(--r);padding:16px 18px;margin:0 0 22px;
+}
+.callout.gold{border-left-color:var(--gold)}
+.callout b{display:block;font-size:14px;margin-bottom:6px;font-weight:600}
+.callout p{margin:0 0 8px;font-size:13.5px;color:var(--dim);line-height:1.6}
+.callout p:last-child{margin-bottom:0}
+
+footer{border-top:1px solid var(--rule);padding:28px 0;margin-top:20px;color:var(--faint);font-size:12.5px}
+.hide{display:none !important}
+code{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold)}
+
+@media (max-width:600px){
+  .shell{padding:0 16px 70px}
+  .step{border-right:none;border-bottom:1px solid var(--rule)}
+  .cover{padding:30px 22px 26px}
+  .stamp{width:88px;height:88px;top:20px;right:16px}
+  .stamp span{font-size:12px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+  html{scroll-behavior:auto}
+  .stamp.hit{opacity:1;transform:rotate(-14deg) scale(1)}
+}
+</style>
+</head>
+<body class="locked">
+
+<div class="gate" id="gate">
+  <div class="cover" id="cover">
+    <div class="stamp" id="stamp"><span>OPEN</span><small>ADMISSION DESK</small></div>
+    <p class="cover-eyebrow">Internal file · not for circulation</p>
+    <h1>College Mantra<em>Admission Desk</em></h1>
+    <div class="cover-meta">
+      <span>FILE&nbsp;CM-MASTER</span><span>DESK:&nbsp;3</span><span>ANNEXURES:&nbsp;10</span>
+    </div>
+    <label class="gate-label" for="pw">Enter file password</label>
+    <div class="gate-row">
+      <input id="pw" type="password" autocomplete="off" spellcheck="false" placeholder="••••••" aria-describedby="err">
+      <button id="go" type="button">Open file</button>
+    </div>
+    <p class="gate-err" id="err" role="alert"></p>
+    <p class="gate-note"><b style="color:var(--paper)">Read this before sharing.</b><br>
+    This gate runs in the browser. It keeps the page out of casual view and out of search results, but anyone who opens the page source can read everything behind it. Treat this as a shared cover on a shared file — not as security. Keep real student data, ID documents and fee records out of it.</p>
+  </div>
+</div>
+
+<div id="app" class="hide">
+<div class="shell">
+
+  <header class="masthead">
+    <p class="mast-top">Counselling desk · command centre · India</p>
+    <h1>Every file we hold on <em>College Mantra</em></h1>
+    <p class="mast-sub">One page for the three of us: what has been built, where it lives, which repository holds it, which tools run it, and the reference the desk actually needs during an admission cycle.</p>
+    <div class="desk">
+      <div class="person"><i>S</i><div><b>Shive</b><br><s>Systems &amp; automation</s></div></div>
+      <div class="person"><i>V</i><div><b>Vineet</b><br><s>Counsellor</s></div></div>
+      <div class="person"><i>Q</i><div><b>Shaqlain</b><br><s>Counsellor</s></div></div>
+    </div>
+  </header>
+
+  <div class="controls">
+    <div class="controls-in">
+      <input class="search" id="q" type="search" placeholder="Filter every card on this page — try &quot;deck&quot;, &quot;NEET&quot;, &quot;n8n&quot;, &quot;repo&quot;">
+      <nav class="jump">
+        <a href="#a">A·Assets</a><a href="#b">B·Education</a><a href="#c">C·Repos</a>
+        <a href="#d">D·Tools</a><a href="#e">E·Skills</a><a href="#f">F·Cycle</a>
+        <a href="#g">G·Authorities</a><a href="#h">H·Desk</a><a href="#i">I·Blockers</a><a href="#j">J·Verify</a>
+      </nav>
+    </div>
+  </div>
+
+  <div class="callout gold">
+    <b>One limitation to know before you send this link to Vineet or Shaqlain</b>
+    <p>Links that point to a Claude conversation only open for the account that created them. On anyone else's device they will land on a sign-in wall. Anything marked <span class="chip grey" style="display:inline-block">chat only</span> below is in that category — Shive has to export or re-share the file itself for the other two to see it.</p>
+    <p>Links that point to GitHub or a published page work for everyone.</p>
+  </div>
+
+<section class="ax" id="a">
+  <div class="ax-head"><span class="ax-tag">Annexure A</span><h2>College Mantra build assets</h2></div>
+  <p class="ax-note">Everything produced for the automation project. Nothing here is deployed — the whole programme is still documentation and specification. That gap is the single most honest thing on this page.</p>
+  <div class="grid" data-filter>
+    <div class="card">
+      <h3>Master progress dashboard (v2)</h3>
+      <p>Build log across the four automation pillars, with deployed infrastructure counted honestly at zero. The predecessor to this page.</p>
+      <div class="chips"><span class="chip">dashboard</span><span class="chip grey">chat only</span></div>
+      <div class="links"><a href="https://claude.ai/chat/055fa0b5-4c3e-479a-a423-c3426f1bb9f0" target="_blank" rel="noopener">Open source chat</a></div>
+    </div>
+    <div class="card">
+      <h3>Client pitch deck — 12 slides</h3>
+      <p>Navy and gold deck proposing automation of the full business model. A Gmail draft to collegemantraofficial@gmail.com was created but never sent, and the deck must be attached by hand — the mail tool cannot attach files.</p>
+      <div class="chips"><span class="chip">pptx</span><span class="chip hold">draft unsent</span><span class="chip grey">chat only</span></div>
+      <div class="links"><a href="https://claude.ai/chat/055fa0b5-4c3e-479a-a423-c3426f1bb9f0" target="_blank" rel="noopener">Open source chat</a></div>
+    </div>
+    <div class="card">
+      <h3>Subscription &amp; cost list</h3>
+      <p>Itemised annual estimate for every tool the automation stack would need. Two lines — DLT registration and Twilio voice — were left unquoted rather than guessed. All figures are third-party sourced and unverified.</p>
+      <div class="chips"><span class="chip">pdf</span><span class="chip hold">unverified pricing</span><span class="chip grey">chat only</span></div>
+      <div class="links"><a href="https://claude.ai/chat/055fa0b5-4c3e-479a-a423-c3426f1bb9f0" target="_blank" rel="noopener">Open source chat</a></div>
+    </div>
+    <div class="card">
+      <h3>Cost visualisation dashboard</h3>
+      <p>Bar and donut breakdown of the same subscription costs. Built on tool pricing only — it contains no College Mantra revenue or expense data, because none was ever supplied.</p>
+      <div class="chips"><span class="chip">dashboard</span><span class="chip grey">chat only</span></div>
+      <div class="links"><a href="https://claude.ai/chat/055fa0b5-4c3e-479a-a423-c3426f1bb9f0" target="_blank" rel="noopener">Open source chat</a></div>
+    </div>
+    <div class="card">
+      <h3>Plain-language guide book — 11 pages</h3>
+      <p>The whole system explained without jargon, written for the family side of the business rather than for a technical reader.</p>
+      <div class="chips"><span class="chip">docx</span><span class="chip grey">chat only</span></div>
+      <div class="links"><a href="https://claude.ai/chat/055fa0b5-4c3e-479a-a423-c3426f1bb9f0" target="_blank" rel="noopener">Open source chat</a></div>
+    </div>
+    <div class="card">
+      <h3>n8n implementation specification</h3>
+      <p>The automatable slice extracted from the "Admission Operating System" blueprint, plus a companion Claude Code prompt for scaffolding the actual workflow JSON. Specified, not built.</p>
+      <div class="chips"><span class="chip">spec</span><span class="chip hold">not scaffolded</span><span class="chip grey">chat only</span></div>
+      <div class="links"><a href="https://claude.ai/chat/055fa0b5-4c3e-479a-a423-c3426f1bb9f0" target="_blank" rel="noopener">Open source chat</a></div>
+    </div>
+    <div class="card">
+      <h3>Intake &amp; fee comparison form — analysis</h3>
+      <p>The physical form the desk uses today, read and mapped: NEET / medical admissions, quoted across Pune, Mumbai and Bangalore. Confirms the business currently runs on paper.</p>
+      <div class="chips"><span class="chip">source doc</span><span class="chip">paper process</span></div>
+      <div class="links"><a href="https://claude.ai/chat/055fa0b5-4c3e-479a-a423-c3426f1bb9f0" target="_blank" rel="noopener">Open source chat</a></div>
+    </div>
+    <div class="card ok">
+      <h3>Course showcase — cinematic film page</h3>
+      <p>Self-playing full-screen course film: ten streams — MBA, BBA, MBBS, B.Tech, BDS, Law, BCA/MCA, B.Pharm, Design, Hotel Management — each holding a shortlist of ten colleges. Ships with a manifest of 95 image slots to fill. The shortlists are indicative, not ranked — check current NIRF before publishing.</p>
+      <div class="chips"><span class="chip">marketing</span><span class="chip hold">needs images</span><span class="chip grey">chat only</span></div>
+      <div class="links"><a href="https://claude.ai/chat/cf7df07d-5e4b-49a8-96ee-912e1a8bcdcd" target="_blank" rel="noopener">Open source chat</a><a href="https://www.nirfindia.org/" target="_blank" rel="noopener">Check NIRF</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="ax" id="b">
+  <div class="ax-head"><span class="ax-tag">Annexure B</span><h2>Education-sector work outside the College Mantra file</h2></div>
+  <p class="ax-note">Adjacent builds that the counselling desk can borrow from — competitor intelligence, student-facing products, and the compliance work that covers all of them.</p>
+  <div class="grid" data-filter>
+    <div class="card warn">
+      <h3>DPDP exposure register — 21 ventures</h3>
+      <p>Compliance dashboard across the portfolio. College Mantra is flagged as already operating with live student data and partner sharing without separate consent. The education stack as a whole is the largest exposure, because minors are involved and the Act's child-data duties are the strictest part of it.</p>
+      <div class="chips"><span class="chip hold">blocker</span><span class="chip">compliance</span><span class="chip grey">chat only</span></div>
+      <div class="links"><a href="https://claude.ai/chat/713661c0-28e7-4bb0-b842-cb254d154bc2" target="_blank" rel="noopener">Open source chat</a></div>
+    </div>
+    <div class="card">
+      <h3>Competitor teardown — @aditya_coep_counselling</h3>
+      <p>Full intelligence dashboard on a Maharashtra engineering-admissions counsellor: MHT-CET and CAP round positioning, testimonial-reel content system, and the YouTube → Instagram → WhatsApp → paid plan funnel. The closest direct analogue to what this desk sells.</p>
+      <div class="chips"><span class="chip">competitor</span><span class="chip">MHT-CET</span><span class="chip grey">chat only</span></div>
+      <div class="links"><a href="https://claude.ai/chat/4c289f77-781e-49b3-9897-d47d20b79c09" target="_blank" rel="noopener">Open source chat</a></div>
+    </div>
+    <div class="card">
+      <h3>Fair Copy — AI tutor for Class 11–12 &amp; JEE</h3>
+      <p>Working tutor with an exam-hall interface: OMR-style exam selectors, photo, camera and PDF question upload, nothing stored. Sibling accuracy-audit dashboard benchmarks it against a real JEE Advanced 2024 paper.</p>
+      <div class="chips"><span class="chip">product</span><span class="chip">JEE / CBSE</span><span class="chip grey">chat only</span></div>
+      <div class="links"><a href="https://claude.ai/chat/650c170b-58a4-4e30-acfa-2a7439bf62e6" target="_blank" rel="noopener">Open source chat</a></div>
+    </div>
+    <div class="card">
+      <h3>Reference-book &amp; entrance-exam directory</h3>
+      <p>Compiled guide: NCERT and supplementary books by subject and board, official past-paper sources, and a directory of 40+ Indian engineering entrances spanning national, state and private university levels. Directly usable at the counselling table.</p>
+      <div class="chips"><span class="chip">reference</span><span class="chip grey">chat only</span></div>
+      <div class="links"><a href="https://claude.ai/chat/650c170b-58a4-4e30-acfa-2a7439bf62e6" target="_blank" rel="noopener">Open source chat</a></div>
+    </div>
+    <div class="card warn">
+      <h3>StudySavior</h3>
+      <p>Homework-help platform for Indian students, with MyCollegeMantra named as partner and a referral link scheme. Flagged as the one venture that may already be non-compliant today: under-18 users, no age gate, no parental consent, and a referral mechanic that harvests classmates' contacts.</p>
+      <div class="chips"><span class="chip hold">consent gap</span><span class="chip">partner</span></div>
+      <div class="links"><a href="https://claude.ai/chat/713661c0-28e7-4bb0-b842-cb254d154bc2" target="_blank" rel="noopener">Compliance context</a></div>
+    </div>
+    <div class="card">
+      <h3>Study-abroad documents dashboard (Germany track)</h3>
+      <p>28-item document tracker across four stages with 16 on the critical path, plus a full IELTS preparation guide. Built for one student journey, but it is the template for the entire overseas side of the desk.</p>
+      <div class="chips"><span class="chip">study abroad</span><span class="chip hold">not deployed</span><span class="chip grey">chat only</span></div>
+      <div class="links"><a href="https://claude.ai/chat/cd8e2e88-eade-4312-a0cf-3bd7f09bac77" target="_blank" rel="noopener">Open source chat</a></div>
+    </div>
+    <div class="card ok">
+      <h3>Build ledger — every artefact ever made</h3>
+      <p>The full cross-venture index, live and public. Useful when you need to find something that predates this file.</p>
+      <div class="chips"><span class="chip live">published</span></div>
+      <div class="links"><a href="https://shivee999.github.io/ledger/" target="_blank" rel="noopener">Open ledger</a><a href="https://github.com/Shivee999/ledger" target="_blank" rel="noopener">Repo</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="ax" id="c">
+  <div class="ax-head"><span class="ax-tag">Annexure C</span><h2>GitHub repositories</h2></div>
+  <p class="ax-note">Read live from the <code>Shivee999</code> account: 65 repositories total, of which 15 are original work and the rest are forks. Only the originals are listed. Published addresses that were confirmed in earlier sessions are marked; the others are repositories whose Pages status has not been re-checked, so open the repo first rather than assuming a live URL.</p>
+  <div class="grid" data-filter>
+    <div class="card ok"><h3>collegemantra</h3><p>This file. The page you are reading.</p><div class="chips"><span class="chip live">published</span><span class="chip">this file</span></div><div class="links"><a href="https://github.com/Shivee999/collegemantra" target="_blank" rel="noopener">Repo</a></div></div>
+    <div class="card ok"><h3>ledger</h3><p>Index of every artefact built, in two stacks, plus the public products page and the free-tools hub.</p><div class="chips"><span class="chip live">published</span></div><div class="links"><a href="https://shivee999.github.io/ledger/" target="_blank" rel="noopener">Live</a><a href="https://github.com/Shivee999/ledger" target="_blank" rel="noopener">Repo</a></div></div>
+    <div class="card ok"><h3>links</h3><p>Master link hub for @shive.build, with the music and recruiter sub-pages.</p><div class="chips"><span class="chip live">published</span></div><div class="links"><a href="https://shivee999.github.io/links/" target="_blank" rel="noopener">Live</a><a href="https://github.com/Shivee999/links" target="_blank" rel="noopener">Repo</a></div></div>
+    <div class="card ok"><h3>celleb-dashboard</h3><p>CELLeb talent and endorsement command centre — brand-facing rate dashboard.</p><div class="chips"><span class="chip live">published</span></div><div class="links"><a href="https://shivee999.github.io/celleb-dashboard/" target="_blank" rel="noopener">Live</a><a href="https://github.com/Shivee999/celleb-dashboard" target="_blank" rel="noopener">Repo</a></div></div>
+    <div class="card"><h3>work</h3><p>Work call sheet — motion graphics, web and product design.</p><div class="chips"><span class="chip">recruiter-facing</span></div><div class="links"><a href="https://github.com/Shivee999/work" target="_blank" rel="noopener">Repo</a></div></div>
+    <div class="card"><h3>wyre</h3><p>WYRE mirror-polished wired earbuds — pre-order landing page.</p><div class="chips"><span class="chip">commerce</span></div><div class="links"><a href="https://github.com/Shivee999/wyre" target="_blank" rel="noopener">Repo</a></div></div>
+    <div class="card"><h3>celleb-preview</h3><p>CELLeb rate dashboard and app wireframe preview.</p><div class="chips"><span class="chip grey">preview</span></div><div class="links"><a href="https://github.com/Shivee999/celleb-preview" target="_blank" rel="noopener">Repo</a></div></div>
+    <div class="card"><h3>aegis-safety</h3><p>Aegis — safety layer for people exercising the right to protest.</p><div class="chips"><span class="chip grey">unrelated</span></div><div class="links"><a href="https://github.com/Shivee999/aegis-safety" target="_blank" rel="noopener">Repo</a></div></div>
+    <div class="card"><h3>krowdcapture-landing</h3><p>KrowdCapture early-access landing page.</p><div class="chips"><span class="chip grey">unrelated</span></div><div class="links"><a href="https://github.com/Shivee999/krowdcapture-landing" target="_blank" rel="noopener">Repo</a></div></div>
+    <div class="card"><h3>intention-site</h3><p>INTENTION concept site — wearable memory for conversations.</p><div class="chips"><span class="chip grey">unrelated</span></div><div class="links"><a href="https://github.com/Shivee999/intention-site" target="_blank" rel="noopener">Repo</a></div></div>
+    <div class="card"><h3>skill-stacks</h3><p>Skill Stacks storefront — the 950-skills marketplace page.</p><div class="chips"><span class="chip">storefront</span></div><div class="links"><a href="https://github.com/Shivee999/skill-stacks" target="_blank" rel="noopener">Repo</a></div></div>
+    <div class="card"><h3>fitme-creator-collab-dashboard</h3><p>FITme creator and partnership pitch decks plus master dashboard.</p><div class="chips"><span class="chip grey">unrelated</span></div><div class="links"><a href="https://github.com/Shivee999/fitme-creator-collab-dashboard" target="_blank" rel="noopener">Repo</a></div></div>
+    <div class="card"><h3>trend-news-pipeline</h3><p>Daily trending-news auto-publish and repurpose pipeline. Relevant if the desk ever wants an automated content feed.</p><div class="chips"><span class="chip">content ops</span></div><div class="links"><a href="https://github.com/Shivee999/trend-news-pipeline" target="_blank" rel="noopener">Repo</a></div></div>
+    <div class="card mute"><h3>DreamKey-Automation</h3><p>Agency repo. Confirmed in an earlier session to contain only a README — no code has been pushed.</p><div class="chips"><span class="chip hold">empty</span></div><div class="links"><a href="https://github.com/Shivee999/DreamKey-Automation" target="_blank" rel="noopener">Repo</a></div></div>
+    <div class="card mute"><h3>ULTIMARON- &nbsp;/&nbsp; ULTIMATRON</h3><p>Desktop AI companion. The trailing-hyphen repo is the functional one; the other is an empty misspelling. Not education work — listed so nobody opens the wrong one.</p><div class="chips"><span class="chip grey">internal</span></div><div class="links"><a href="https://github.com/Shivee999/ULTIMARON-" target="_blank" rel="noopener">Functional repo</a><a href="https://github.com/Shivee999/ULTIMATRON" target="_blank" rel="noopener">Empty repo</a></div></div>
+  </div>
+  <div class="callout" style="margin-top:18px">
+    <b>Not on GitHub at all</b>
+    <p>The College Mantra dashboard, cost dashboard, pitch deck, cost PDF, guide book, course film page, DPDP register, Fair Copy tutor and the Germany documents dashboard exist only as files inside conversations. There is no <code>germany</code> repository on the account — that dashboard was written but never pushed. If any of these matter, they need pushing to a repo before they can be shared or survive.</p>
+  </div>
+</section>
+
+<section class="ax" id="d">
+  <div class="ax-head"><span class="ax-tag">Annexure D</span><h2>Tools, connectors and the automation stack</h2></div>
+  <p class="ax-note">What is connected, what it can actually do, and where each one stops. The limitations column matters more than the tool names — most wasted time on this project has come from assuming a connector could do something it cannot.</p>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Tool</th><th>Role on this desk</th><th>State &amp; known limits</th></tr></thead>
+      <tbody data-filter-rows>
+        <tr><td><b>n8n</b><small>bettercallwrld.app.n8n.cloud</small></td><td>Intended engine for lead capture, follow-up sequences, scheduling and document routing.</td><td>Connected. Existing workflows are for other ventures — multi-agent orchestrator, content posting, reel intelligence. <b>Nothing built for College Mantra yet.</b></td></tr>
+        <tr><td><b>Airtable</b><small>base apprSA4cLYy2IrgZq</small></td><td>Student and lead records, allotment tracking, fee comparison tables.</td><td>Connected. Current base holds Dubai real-estate leads. College Mantra needs its own base — do not mix student data into an existing table.</td></tr>
+        <tr><td><b>HubSpot</b></td><td>CRM alternative for the counselling pipeline: enquiry → counselled → applied → admitted.</td><td>Connected. No College Mantra pipeline configured.</td></tr>
+        <tr><td><b>Gmail</b></td><td>Counsellor follow-up mail, document requests, offer letters.</td><td>Connected but <b>draft-only</b>. It cannot send, and it cannot attach files. Every mail needs a human to open the draft, attach, and press send.</td></tr>
+        <tr><td><b>Google Calendar &amp; Drive</b></td><td>Counselling appointment slots; student document folders.</td><td>Connected. Unconfigured for this desk.</td></tr>
+        <tr><td><b>WhatsApp Business</b></td><td>The channel Indian students and parents actually reply on. Should be the primary follow-up path, not email.</td><td><b>Not set up.</b> Needs a business number and a BSP decision. This is the single highest-leverage unbuilt piece.</td></tr>
+        <tr><td><b>Twilio / voice</b></td><td>Outbound calling and reminders.</td><td>Not set up. Pricing was deliberately left unquoted rather than guessed. DLT registration is required for Indian SMS and its fee was also left unquoted.</td></tr>
+        <tr><td><b>Apollo.io</b></td><td>Prospecting for B2B school and coaching partnerships.</td><td>Free plan. People Search returns 403 permanently — browser use only. Do not build a workflow that depends on it.</td></tr>
+        <tr><td><b>GitHub</b><small>Shivee999 via Composio</small></td><td>Hosting for every dashboard and public page, including this one.</td><td>Working. Pages take a couple of minutes to go live after a push; the raw CDN serves stale content, so read through the API.</td></tr>
+        <tr><td><b>Razorpay</b></td><td>Counselling fee collection, instalments.</td><td>Connected at account level. No College Mantra payment flow exists.</td></tr>
+        <tr><td><b>Claude Code + MCP</b><small>ASUS laptop</small></td><td>Where the n8n workflow JSON would actually get scaffolded from the written specification.</td><td>Working. The specification is ready and unused.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="ax" id="e">
+  <div class="ax-head"><span class="ax-tag">Annexure E</span><h2>Skills available to this desk</h2></div>
+  <p class="ax-note">Capabilities that can be invoked directly when working on College Mantra, rather than described from scratch each time.</p>
+  <div class="grid" data-filter>
+    <div class="card"><h3>ruhi &nbsp;/&nbsp; ultimatron</h3><p>Personal chief-of-staff skills grounded in the Obsidian vault. Use for a decisive call on what to work on next across the venture portfolio, College Mantra included.</p><div class="chips"><span class="chip">custom</span></div></div>
+    <div class="card"><h3>Document builders</h3><p>docx, pptx, pdf and xlsx. These produced the pitch deck, the cost PDF and the guide book, and they are what to reach for when the desk needs a parent-facing document or a fee comparison sheet.</p><div class="chips"><span class="chip">deliverables</span></div></div>
+    <div class="card"><h3>Dashboard &amp; front-end</h3><p>data:build-dashboard and frontend-design. Every dashboard in this file came out of these two.</p><div class="chips"><span class="chip">dashboards</span></div></div>
+    <div class="card"><h3>Marketing set</h3><p>campaign-plan, content-creation, email-sequence, competitive-brief, seo-audit. Directly applicable to admission-season lead generation and the nurture sequences the automation plan calls for.</p><div class="chips"><span class="chip">demand gen</span></div></div>
+    <div class="card"><h3>Sales set</h3><p>pipeline-review, call-prep, call-summary, draft-outreach, forecast. A counselling pipeline behaves like a sales pipeline — enquiry, consultation, conversion, admission.</p><div class="chips"><span class="chip">pipeline</span></div></div>
+    <div class="card"><h3>Legal &amp; compliance set</h3><p>compliance-check, review-contract, legal-risk-assessment. The route to a defensible consent flow and to reviewing partner and college agreements.</p><div class="chips"><span class="chip">compliance</span></div></div>
+  </div>
+</section>
+
+<section class="ax" id="f">
+  <div class="ax-head"><span class="ax-tag">Annexure F</span><h2>The admission cycle, as the desk experiences it</h2></div>
+  <p class="ax-note">Stage-by-stage, this is where a counsellor's time actually goes and where automation would remove the most work. Exact dates shift every year with the exam calendar — treat the sequence as fixed and the calendar as something to confirm annually at source.</p>
+  <div class="flow">
+    <div class="step"><em>Stage 01</em><b>Enquiry</b><p>Parent or student makes first contact — usually WhatsApp or a phone call, rarely email. Speed of first reply decides most of it.</p></div>
+    <div class="step"><em>Stage 02</em><b>Profile &amp; eligibility</b><p>Board, stream, marks, entrance attempt, category, domicile state, budget ceiling. Everything downstream depends on getting this right once.</p></div>
+    <div class="step"><em>Stage 03</em><b>Shortlist &amp; fee comparison</b><p>Course and college options laid against total cost. This is the conversation the family remembers, and the desk's current paper form.</p></div>
+    <div class="step"><em>Stage 04</em><b>Registration &amp; forms</b><p>Entrance registration, corrections window, fee payment, admit card. Every deadline here is unforgiving.</p></div>
+    <div class="step"><em>Stage 05</em><b>Result &amp; rank</b><p>Score, rank, percentile, category rank. The shortlist gets rebuilt against reality.</p></div>
+    <div class="step"><em>Stage 06</em><b>Choice filling &amp; locking</b><p>The highest-skill moment on the desk. Order of preferences decides the seat. Unlocked choices are the most common avoidable loss.</p></div>
+    <div class="step"><em>Stage 07</em><b>Allotment &amp; rounds</b><p>Round-wise results, freeze or float or slide, upgrade decisions, mop-up and spot rounds.</p></div>
+    <div class="step"><em>Stage 08</em><b>Reporting &amp; verification</b><p>Physical reporting, original document check, fee payment. One missing certificate loses a confirmed seat.</p></div>
+    <div class="step"><em>Stage 09</em><b>Post-admission</b><p>Hostel, loan, scholarship, migration certificate. Where referrals are earned.</p></div>
+  </div>
+</section>
+
+<section class="ax" id="g">
+  <div class="ax-head"><span class="ax-tag">Annexure G</span><h2>Who allots which seat</h2></div>
+  <p class="ax-note">Knowing which body controls a seat is the difference between a real answer and a guess at the counselling table. The structure below is stable year to year. Portal addresses are not — several exam sites change subdomain annually, so only the parent bodies I can vouch for are linked. Anything unlinked should be found through its official parent site, never a search-result aggregator.</p>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Body</th><th>Allots</th><th>Qualifying route</th><th>Portal</th></tr></thead>
+      <tbody data-filter-rows>
+        <tr><td><b>JoSAA</b></td><td>IITs, NITs, IIITs and other centrally funded institutes</td><td>JEE Main, plus JEE Advanced for the IITs</td><td><a href="https://josaa.nic.in/" target="_blank" rel="noopener">josaa.nic.in</a></td></tr>
+        <tr><td><b>CSAB</b></td><td>Vacancy and special rounds after JoSAA closes</td><td>JEE Main</td><td>Find via JoSAA — address changes</td></tr>
+        <tr><td><b>MCC, DGHS</b></td><td>15% All India Quota MBBS and BDS, deemed and central universities, and central institute seats</td><td>NEET-UG</td><td><a href="https://mcc.nic.in/" target="_blank" rel="noopener">mcc.nic.in</a></td></tr>
+        <tr><td><b>State medical authority</b></td><td>85% state quota MBBS and BDS</td><td>NEET-UG plus state domicile</td><td>Per state — differs in every state</td></tr>
+        <tr><td><b>State CET cells</b><small>Maharashtra runs CAP rounds</small></td><td>State engineering, pharmacy, management and allied seats</td><td>State CET, and in some states JEE Main</td><td>Per state CET cell</td></tr>
+        <tr><td><b>Consortium of NLUs</b></td><td>National Law Universities</td><td>CLAT</td><td>Consortium site — verify current address</td></tr>
+        <tr><td><b>NTA</b></td><td>Conducts the exams themselves — it does not allot seats</td><td>JEE Main, NEET-UG, CUET and others</td><td><a href="https://www.nta.ac.in/" target="_blank" rel="noopener">nta.ac.in</a></td></tr>
+        <tr><td><b>Council of Architecture</b></td><td>Architecture admission eligibility</td><td>NATA, or JEE Main Paper 2</td><td>Council site — verify current address</td></tr>
+        <tr><td><b>Private &amp; deemed universities</b></td><td>Their own seats, on their own calendar</td><td>Own entrance, or a national score</td><td>Institution by institution</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="ax-note" style="margin-top:22px">Regulators worth checking before recommending any institution — approval status, intake and recognition all live here rather than on the college's own website.</p>
+  <div class="grid" data-filter>
+    <div class="card"><h3>UGC</h3><p>University recognition and higher-education regulation.</p><div class="links"><a href="https://www.ugc.gov.in/" target="_blank" rel="noopener">ugc.gov.in</a></div></div>
+    <div class="card"><h3>AICTE</h3><p>Approval and sanctioned intake for technical and management programmes.</p><div class="links"><a href="https://www.aicte-india.org/" target="_blank" rel="noopener">aicte-india.org</a></div></div>
+    <div class="card"><h3>National Medical Commission</h3><p>Medical college recognition and seat intake. The first check on any MBBS recommendation.</p><div class="links"><a href="https://www.nmc.org.in/" target="_blank" rel="noopener">nmc.org.in</a></div></div>
+    <div class="card"><h3>NIRF</h3><p>The government ranking framework. The only ranking worth quoting to a parent, because it is the one they can verify themselves.</p><div class="links"><a href="https://www.nirfindia.org/" target="_blank" rel="noopener">nirfindia.org</a></div></div>
+    <div class="card mute"><h3>Council-specific bodies</h3><p>Bar Council for law, Pharmacy Council for pharmacy, NCTE for teacher education, INC for nursing. I am not confident enough of their current web addresses to link them — reach them through the relevant ministry site rather than a search result.</p><div class="chips"><span class="chip hold">verify address</span></div></div>
+  </div>
+</section>
+
+<section class="ax" id="h">
+  <div class="ax-head"><span class="ax-tag">Annexure H</span><h2>Desk checklists</h2></div>
+  <p class="ax-note">The two document lists the desk repeats hundreds of times a season. Requirements vary by state, category and institution — confirm against the specific institution's prospectus each time.</p>
+  <div class="cols">
+    <div class="list">
+      <h4>Domestic admission — student file</h4>
+      <ul>
+        <li>Class 10 marksheet and passing certificate</li>
+        <li>Class 12 marksheet and passing certificate</li>
+        <li>Entrance scorecard and rank letter</li>
+        <li>Seat allotment letter</li>
+        <li>Transfer certificate from the last school</li>
+        <li>Migration certificate, where the board requires it</li>
+        <li>Domicile or residence certificate</li>
+        <li>Category certificate, with validity checked</li>
+        <li>Non-creamy-layer certificate for OBC, current year</li>
+        <li>EWS certificate, current year</li>
+        <li>Income certificate</li>
+        <li>Disability certificate, where applicable</li>
+        <li>Aadhaar and one photo ID</li>
+        <li>Passport-size photographs</li>
+        <li>Medical fitness certificate</li>
+        <li>Gap certificate or affidavit, if there is a break in study</li>
+        <li>Fee payment receipts, kept in original</li>
+      </ul>
+    </div>
+    <div class="list">
+      <h4>Study abroad — student file</h4>
+      <ul>
+        <li>Passport, with validity checked against course end</li>
+        <li>Full academic transcripts and degree certificates</li>
+        <li>English test result — IELTS, TOEFL, PTE or Duolingo, per university</li>
+        <li>Statement of purpose</li>
+        <li>Letters of recommendation</li>
+        <li>CV</li>
+        <li>Proof of funds, and a blocked account where the country requires one</li>
+        <li>Credential evaluation, such as the APS certificate for Germany</li>
+        <li>University offer or admission letter</li>
+        <li>Visa application and appointment confirmation</li>
+        <li>Health insurance</li>
+        <li>Accommodation proof</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout" style="margin-top:18px">
+    <b>Two timing traps worth writing on the wall</b>
+    <p>Category and income certificates are usually accepted only for the current financial year — a certificate issued last season is a rejected file.</p>
+    <p>Credential evaluation for Germany runs on a multi-week turnaround. Started late, it does not delay the visa — it costs the intake.</p>
+  </div>
+</section>
+
+<section class="ax" id="i">
+  <div class="ax-head"><span class="ax-tag">Annexure I</span><h2>Open decisions and blockers</h2></div>
+  <p class="ax-note">Nothing on this list is a build problem. Every one of them is a decision or a piece of information the desk has to supply before more building is worth doing.</p>
+  <div class="grid" data-filter>
+    <div class="card warn"><h3>Consent for student data</h3><p>The business is running live with student data now, shares it with partners, and has no separate consent flow. This is the one that carries actual legal exposure, and it applies today rather than at launch.</p><div class="chips"><span class="chip hold">act now</span></div></div>
+    <div class="card warn"><h3>Grievance officer contact</h3><p>The cheapest available compliance win: publish a named grievance contact on every property. It costs nothing and is currently missing everywhere.</p><div class="chips"><span class="chip hold">quick</span></div></div>
+    <div class="card"><h3>Lead volume and headcount</h3><p>How many enquiries a month, and how many counsellors handle them. Every capacity decision in the automation plan is unanswerable without this.</p><div class="chips"><span class="chip">open</span></div></div>
+    <div class="card"><h3>Tools already in use</h3><p>What the desk runs on today. Building alongside an unknown existing tool is how duplicate systems get created.</p><div class="chips"><span class="chip">open</span></div></div>
+    <div class="card"><h3>WhatsApp Business number</h3><p>Whether one exists, and whose name it is under. Nothing on the follow-up side can start before this.</p><div class="chips"><span class="chip">open</span></div></div>
+    <div class="card"><h3>Is one lakh leads a month real?</h3><p>Still unclear whether that figure is a genuine target or a scale scenario being stress-tested. The two answers produce completely different architectures and completely different costs.</p><div class="chips"><span class="chip">open</span></div></div>
+    <div class="card"><h3>Voice approach</h3><p>Cloning a real counsellor's voice was flagged as legally troublesome; a consistent AI brand persona was the recommended path. Undecided.</p><div class="chips"><span class="chip">open</span></div></div>
+    <div class="card"><h3>WhatsApp BSP selection</h3><p>Which provider, at what per-conversation cost. Undecided, and it gates the follow-up build.</p><div class="chips"><span class="chip">open</span></div></div>
+    <div class="card mute"><h3>The pattern behind all of it</h3><p>Across the portfolio the constraint is never capability — it is that thoroughly built things do not get sent, shipped or sold. This project has a deck, a costing, a guide book and a specification, and zero deployed infrastructure. The next useful action is sending something, not building something.</p><div class="chips"><span class="chip grey">honest note</span></div></div>
+  </div>
+</section>
+
+<section class="ax" id="j">
+  <div class="ax-head"><span class="ax-tag">Annexure J</span><h2>What on this page to verify before relying on it</h2></div>
+  <p class="ax-note">Written plainly so nobody quotes something from here to a parent that turns out to be wrong.</p>
+  <div class="cols">
+    <div class="list">
+      <h4>Confirmed by direct check</h4>
+      <ul>
+        <li>The repository list — read live from the GitHub account during this build. 65 repositories, 15 original.</li>
+        <li>That no <code>germany</code> repository exists on the account.</li>
+        <li>That this page is published, since it was pushed and enabled here.</li>
+      </ul>
+    </div>
+    <div class="list">
+      <h4>Carried over from earlier sessions</h4>
+      <ul>
+        <li>The list of College Mantra assets and their contents.</li>
+        <li>Connector limitations — Gmail draft-only, Apollo 403, Airtable base identity.</li>
+        <li>Live status of the ledger, links and CELLeb pages. Confirmed then, not re-checked now.</li>
+        <li>Which repositories have Pages switched on. Not re-checked — open the repo rather than assuming the URL.</li>
+      </ul>
+    </div>
+    <div class="list">
+      <h4>Should not be relied on without checking</h4>
+      <ul>
+        <li>Any exam date or admission deadline. The calendar moves every year.</li>
+        <li>Any fee, tool price or subscription figure in the cost documents. Third-party sourced, unverified.</li>
+        <li>College shortlists in the course film. Indicative only — check current NIRF.</li>
+        <li>Portal addresses left unlinked in Annexure G. I was not confident enough of them to link.</li>
+        <li>The DPDP enforcement timeline. Treated throughout as a working assumption, not a verified date.</li>
+        <li>Any competitor's self-reported figures in the teardown.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+  <footer>
+    <p><b style="color:var(--paper)">College Mantra — Admission Desk.</b> Internal file for Shive, Vineet and Shaqlain. Built as a single page with no backend and no database; it stores nothing and sends nothing. Keep student records, ID documents and fee data out of it and in a system with real access control.</p>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;margin-top:10px">FILE CM-MASTER · <span id="stamp-date"></span></p>
+  </footer>
+</div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var HASH="49ede39042590ac062034980067095fbfd8a9b011e674c72ea28addd65cc6969";
+  var gate=document.getElementById("gate"),app=document.getElementById("app"),
+      pw=document.getElementById("pw"),go=document.getElementById("go"),
+      err=document.getElementById("err"),cover=document.getElementById("cover"),
+      stamp=document.getElementById("stamp");
+
+  function toHex(buf){
+    var a=new Uint8Array(buf),s="";
+    for(var i=0;i<a.length;i++){s+=a[i].toString(16).padStart(2,"0");}
+    return s;
+  }
+  function open_(){
+    stamp.classList.add("hit");
+    setTimeout(function(){
+      gate.classList.add("gone");
+      app.classList.remove("hide");
+      document.body.classList.remove("locked");
+      try{sessionStorage.setItem("cm_open","1");}catch(e){}
+    },520);
+  }
+  function fail(msg){
+    err.textContent=msg;
+    cover.classList.remove("shake");
+    void cover.offsetWidth;
+    cover.classList.add("shake");
+    pw.value="";pw.focus();
+  }
+  function attempt(){
+    var v=pw.value.trim();
+    if(!v){fail("Enter the password to open this file.");return;}
+    if(!(window.crypto&&window.crypto.subtle)){
+      if(v.toUpperCase()==="PAISAN"){open_();}else{fail("That password does not match. Check the case.");}
+      return;
+    }
+    crypto.subtle.digest("SHA-256",new TextEncoder().encode(v.toUpperCase()))
+      .then(function(b){
+        if(toHex(b)===HASH){open_();}
+        else{fail("That password does not match. Check the case.");}
+      })
+      .catch(function(){
+        if(v.toUpperCase()==="PAISAN"){open_();}else{fail("Could not check the password. Reload and try again.");}
+      });
+  }
+  go.addEventListener("click",attempt);
+  pw.addEventListener("keydown",function(e){if(e.key==="Enter"){attempt();}});
+
+  try{
+    if(sessionStorage.getItem("cm_open")==="1"){
+      gate.classList.add("gone");app.classList.remove("hide");
+      document.body.classList.remove("locked");
+    }else{pw.focus();}
+  }catch(e){pw.focus();}
+
+  var d=document.getElementById("stamp-date");
+  if(d){d.textContent="Compiled "+new Date().toLocaleDateString("en-IN",{day:"2-digit",month:"short",year:"numeric"});}
+
+  var q=document.getElementById("q");
+  if(q){
+    q.addEventListener("input",function(){
+      var t=q.value.trim().toLowerCase();
+      document.querySelectorAll("[data-filter] > .card").forEach(function(c){
+        c.classList.toggle("hide", t!=="" && c.textContent.toLowerCase().indexOf(t)===-1);
+      });
+      document.querySelectorAll("[data-filter-rows] > tr").forEach(function(r){
+        r.classList.toggle("hide", t!=="" && r.textContent.toLowerCase().indexOf(t)===-1);
+      });
+      document.querySelectorAll(".ax").forEach(function(s){
+        var boxes=s.querySelectorAll("[data-filter] > .card, [data-filter-rows] > tr");
+        if(!boxes.length){s.classList.toggle("hide", t!=="");return;}
+        var any=false;
+        boxes.forEach(function(b){if(!b.classList.contains("hide")){any=true;}});
+        s.classList.toggle("hide", t!=="" && !any);
+      });
+    });
+  }
+})();
+</script>
+</body>
+</html>
